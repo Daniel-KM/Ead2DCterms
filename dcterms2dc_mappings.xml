@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="XmlMapper/view/xml_mapper_table.xsl"?>
+<!--
+Convert Dublin Core Metadata Terms into Dublin Core Elements (1.1).
+
+For main description, see readme.md [https://github.com/Daniel-KM/Ead2DCterms].
+
+For technical notes, see xml_mapper_mappings.xml.
+
+Mapping
+=======
+
+The elements for which no Dublin Core elements (1.1) are official subproperties
+of DCMI terms are mapped to rights and description.
+
+@version: 20150824
+@see http://dublincore.org/specifications
+@copyright Daniel Berthereau, 2015
+@license CeCILL v2.1 http://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html
+@link https://github.com/Daniel-KM/Ead2DCterms
+-->
+<mappings>
+    <from name="DCMI Metadata Terms" prefix="dcterms" namespace="http://purl.org/dc/terms/" />
+    <to name="Dublin Core Elements" prefix="dc" namespace="http://purl.org/dc/elements/1.1/" />
+
+    <!-- Namespaces to add to the output, in addition to the main. -->
+
+    <!-- This base id will be used to create the unique identifier of each
+    record, that may be used to create relations between records.
+    -->
+    <baseid from="" />
+
+    <!-- Default order.
+    It can be overridden by the same attribute in a mapping. -->
+    <order order="Dublin Core" />
+
+    <!-- The simple mapping. -->
+    <mapping name="Dublin Core" root="/records/record">
+        <map from="title" to="title" />
+        <map from="alternative" to="title" />
+        <map from="creator" to="creator" />
+        <map from="subject" to="subject" />
+        <map from="description" to="description" />
+        <map from="tableOfContents" to="description" />
+        <map from="abstract" to="description" />
+        <map from="publisher" to="publisher" />
+        <map from="contributor" to="contributor" />
+        <map from="date" to="date" />
+        <map from="created" to="date" />
+        <map from="valid" to="date" />
+        <map from="available" to="date" />
+        <map from="issued" to="date" />
+        <map from="modified" to="date" />
+        <map from="dateAccepted" to="date" />
+        <map from="dateCopyrighted" to="date" />
+        <map from="dateSubmitted" to="date" />
+        <map from="type" to="type" />
+        <map from="format" to="format" />
+        <map from="extent" to="format" />
+        <map from="medium" to="format" />
+        <map from="identifier" to="identifier" />
+        <map from="bibliographicCitation" to="identifier" />
+        <map from="source" to="source" />
+        <map from="language" to="language" />
+        <map from="relation" to="relation" />
+        <map from="isVersionOf" to="relation" />
+        <map from="hasVersion" to="relation" />
+        <map from="replaces" to="relation" />
+        <map from="isReplacedBy" to="relation" />
+        <map from="isRequiredBy" to="relation" />
+        <map from="requires" to="relation" />
+        <map from="isPartOf" to="relation" />
+        <map from="hasPart" to="relation" />
+        <map from="isReferencedBy" to="relation" />
+        <map from="references" to="relation" />
+        <map from="isFormatOf" to="relation" />
+        <map from="hasFormat" to="relation" />
+        <map from="conformsTo" to="relation" />
+        <map from="coverage" to="coverage" />
+        <map from="spatial" to="coverage" />
+        <map from="temporal" to="coverage" />
+        <map from="rights" to="rights" />
+        <map from="accessRights" to="rights" />
+        <map from="license" to="rights" />
+        <!-- No Dublin Core elements are official subproperties of the next
+        terms, so they are mapped to rights and description. -->
+        <map from="audience" to="rights" />
+        <map from="mediator" to="rights" />
+        <map from="educationLevel" to="rights" />
+        <map from="accrualMethod" to="description" />
+        <map from="accrualPeriodicity" to="description" />
+        <map from="accrualPolicy" to="description" />
+        <map from="instructionalMethod" to="description" />
+        <map from="provenance" to="rights" />
+        <map from="rightsHolder" to="rights" />
+    </mapping>
+
+    <!-- The simple mapping with the label of the original term appended when
+    needed, so it can be reversed easily. -->
+    <mapping name="Dublin Core with the original term appended" root="/records/record">
+        <map from="title" to="title" />
+        <map from="alternative" to="title" append=" [Alternative Title]" />
+        <map from="creator" to="creator" />
+        <map from="subject" to="subject" />
+        <map from="description" to="description" />
+        <map from="tableOfContents" to="description" append=" [Table Of Contents]" />
+        <map from="abstract" to="description" append=" [Abstract]" />
+        <map from="publisher" to="publisher" />
+        <map from="contributor" to="contributor" />
+        <map from="date" to="date" />
+        <map from="created" to="date" append=" [Date Created]" />
+        <map from="valid" to="date" append=" [Date Valid]" />
+        <map from="available" to="date" append=" [Date Available]" />
+        <map from="issued" to="date" append=" [Date Issued]" />
+        <map from="modified" to="date" append=" [Date Modified]" />
+        <map from="dateAccepted" to="date" append=" [Date Accepted]" />
+        <map from="dateCopyrighted" to="date" append=" [Date Copyrighted]" />
+        <map from="dateSubmitted" to="date" append=" [Date Submitted]" />
+        <map from="type" to="type" />
+        <map from="format" to="format" />
+        <map from="extent" to="format" append=" [Extent]" />
+        <map from="medium" to="format" append=" [Medium]" />
+        <map from="identifier" to="identifier" />
+        <map from="bibliographicCitation" to="identifier" append=" [Bibliographic Citation]" />
+        <map from="source" to="source" />
+        <map from="language" to="language" />
+        <map from="relation" to="relation" />
+        <map from="isVersionOf" to="relation" append=" [Is Version Of]" />
+        <map from="hasVersion" to="relation" append=" [Has Version]" />
+        <map from="replaces" to="relation" append=" [Replaces]" />
+        <map from="isReplacedBy" to="relation" append=" [Is Replaced By]" />
+        <map from="isRequiredBy" to="relation" append=" [Is Required By]" />
+        <map from="requires" to="relation" append=" [Requires]" />
+        <map from="isPartOf" to="relation" append=" [Is Part Of]" />
+        <map from="hasPart" to="relation" append=" [Has Part]" />
+        <map from="isReferencedBy" to="relation" append=" [Is Referenced By]" />
+        <map from="references" to="relation" append=" [References]" />
+        <map from="isFormatOf" to="relation" append=" [Is Format Of]" />
+        <map from="hasFormat" to="relation" append=" [Has Format]" />
+        <map from="conformsTo" to="relation" append=" [Conforms To]" />
+        <map from="coverage" to="coverage" />
+        <map from="spatial" to="coverage" append=" [Spatial Coverage]" />
+        <map from="temporal" to="coverage" append=" [Temporal Coverage]" />
+        <map from="rights" to="rights" />
+        <map from="accessRights" to="rights" append=" [Access Rights]" />
+        <map from="license" to="rights" append=" [License]" />
+        <!-- No Dublin Core elements are official subproperties of the next
+        terms, so they are mapped to rights and description. -->
+        <map from="audience" to="rights" append=" [Audience]" />
+        <map from="mediator" to="rights" append=" [Mediator]" />
+        <map from="educationLevel" to="rights" append=" [Education Level]" />
+        <map from="accrualMethod" to="description" append=" [Accrual Method]" />
+        <map from="accrualPeriodicity" to="description" append=" [Accrual Periodicity]" />
+        <map from="accrualPolicy" to="description" append=" [Accrual Policy]" />
+        <map from="instructionalMethod" to="description" append=" [Instructional Method]" />
+        <map from="provenance" to="rights" append=" [Provenance]" />
+        <map from="rightsHolder" to="rights" append=" [Rights Holder]" />
+    </mapping>
+</mappings>

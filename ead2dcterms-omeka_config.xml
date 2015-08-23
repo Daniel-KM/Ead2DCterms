@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="XmlMapper/view/xml_mapper_table.xsl"?>
+<!--
+Convert a finding aid in EAD to a list of records in Dublin Core Metadata Terms
+and some other elements.
+
+For main description, see ead2omeka_mappings.xml.
+
+@version: 20150824
+@see https://www.loc.gov/ead
+@see http://dublincore.org/specifications
+@copyright Daniel Berthereau, 2015
+@license CeCILL v2.1 http://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html
+@link https://github.com/Daniel-KM/Ead2DCterms
+@link https://github.com/Daniel-KM/Ead4Omeka
+-->
+<config>
+    <!-- These infos are the same as in mappings, and used only for the display. -->
+    <from name="EAD 2002" prefix="ead" namespace="http://www.loc.gov/ead" />
+    <to name="DCMI Metadata Terms" prefix="dcterms" namespace="http://purl.org/dc/terms/" />
+    <to name="Omeka elements" prefix="omeka" namespace="http://localhost/omeka" />
+
+    <!-- Mapping between EAD and Dublin Core Metadata Terms. -->
+    <option name="mappings" value="ead2dcterms-omeka_mappings.xml" />
+
+    <!-- Stylesheet used for rules that are not managed by the mapper currently.
+    NOTE This stylesheet should be imported by the mapper manually, or a
+    specific mapper should be done. -->
+    <option name="rules" value="ead2dcterms_rules.xsl" />
+
+    <!-- Default element name of the root and each record. -->
+    <option name="default_element_root" value="records" />
+    <option name="default_element_record" value="record" />
+
+    <!-- Prepend the prefix of the namespace to each element output. -->
+    <option name="output_prefix" value="true" />
+
+    <!-- Possibilities to add other namespaces. -->
+    <!-- <namespace prefix="ead" namespace="http://www.loc.gov/ead" /> -->
+
+    <!-- This base id will be used to create the unique identifier of each
+    record, that may be used to create relations between records. If no
+    attribute "from" is used, the one set in the mapping will be used.
+    By default, records are the finding aid, the archival description and each
+    components. Digital archival objects (files) are records too, but they use
+    their own id.
+    Note: "document-uri(/)" doesn't work with xslt 1.
+    -->
+    <baseid from="document-uri(/)" default="http://localhost/id" />
+
+    <!-- This default conversion sets a main record for the Finding Aid, with
+    data from the Front Matter, another record for the Archival Description, one
+    record for each component and one record for each digital archival object.
+    -->
+    <records process="true"
+             element_root="records"
+             element_record="record"
+             record_name="true"
+             normalize_space="true"
+             deduplicate="true"
+             remove_empty="true"
+             order="true">
+        <!-- One record for the main informations (Header and Front Matter). -->
+        <record element="record" name="Finding Aid" process="true">
+            <use mapping="Finding Aid" type="base" />
+            <use mapping="Identifier: baseid/xpath" node="/ead/eadheader" process="true" />
+            <use mapping="Has part: Archival Description" process="true" />
+            <use mapping="Has part: Digital archival objects as records" node="/ead/eadheader|frontmatter" process="true" />
+            <use mapping="Has part: Digital objects pointers as links" node="/ead/eadheader|frontmatter" process="true" />
+        </record>
+
+        <!-- One record for the Archival Description (with the main "dsc"). -->
+        <record name="Archival Description" process="true">
+            <use mapping="Archival Description + Description of Subordinate Components" type="base" />
+            <use mapping="Identifier: baseid/xpath" node="/ead/archdesc" />
+            <!-- This node is used because the mapping is looking for the first
+            ancestor of the node, that is the "eadheader". -->
+            <use mapping="Is part of" node="/ead/eadheader/eadid" />
+            <use mapping="Has part: Components" node="/ead/archdesc/dsc" />
+            <use mapping="Has part: Digital archival objects as records" node="/ead/archdesc/mapper:copy-except('dsc', .)" />
+            <use mapping="Has part: Digital archival objects as records" node="/ead/archdesc/dsc/mapper:copy-except('c|c01', .)" />
+            <use mapping="Has part: Digital objects pointers as links" node="/ead/archdesc/mapper:copy-except('dsc', .)" />
+            <use mapping="Has part: Digital objects pointers as links" node="/ead/archdesc/dsc/mapper:copy-except('c|c01', .)" />
+        </record>
+
+        <!-- One record for each component (cXX), at any level. -->
+        <record name="Component" process="true">
+            <use mapping="Component" type="base" />
+            <use mapping="Identifier: baseid/xpath" />
+            <use mapping="Is part of" />
+            <use mapping="Has part: Components" />
+            <use mapping="Has part: Digital archival objects as records" node="self::c/mapper:copy-except('c', .)" />
+            <use mapping="Has part: Digital archival objects as records" node="self::c01/mapper:copy-except('c02', .)" />
+            <use mapping="Has part: Digital archival objects as records" node="self::c02/mapper:copy-except('c03', .)" />
+            <use mapping="Has part: Digital archival objects as records" node="self::c03/mapper:copy-except('c04', .)" />
+            <use mapping="Has part: Digital archival objects as records" node="self::c04/mapper:copy-except('c05', .)" />
+            <use mapping="Has part: Digital archival objects as records" node="self::c05/mapper:copy-except('c06', .)" />
+            <use mapping="Has part: Digital archival objects as records" node="self::c06/mapper:copy-except('c07', .)" />
+            <use mapping="Has part: Digital archival objects as records" node="self::c07/mapper:copy-except('c08', .)" />
+            <use mapping="Has part: Digital archival objects as records" node="self::c08/mapper:copy-except('c09', .)" />
+            <use mapping="Has part: Digital archival objects as records" node="self::c09/mapper:copy-except('c10', .)" />
+            <use mapping="Has part: Digital archival objects as records" node="self::c10/mapper:copy-except('c11', .)" />
+            <use mapping="Has part: Digital archival objects as records" node="self::c11/mapper:copy-except('c12', .)" />
+            <use mapping="Has part: Digital objects pointers as links" node="self::c/mapper:copy-except('c', .)" />
+            <use mapping="Has part: Digital objects pointers as links" node="self::c01/mapper:copy-except('c02', .)" />
+            <use mapping="Has part: Digital objects pointers as links" node="self::c02/mapper:copy-except('c03', .)" />
+            <use mapping="Has part: Digital objects pointers as links" node="self::c03/mapper:copy-except('c04', .)" />
+            <use mapping="Has part: Digital objects pointers as links" node="self::c04/mapper:copy-except('c05', .)" />
+            <use mapping="Has part: Digital objects pointers as links" node="self::c05/mapper:copy-except('c06', .)" />
+            <use mapping="Has part: Digital objects pointers as links" node="self::c06/mapper:copy-except('c07', .)" />
+            <use mapping="Has part: Digital objects pointers as links" node="self::c07/mapper:copy-except('c08', .)" />
+            <use mapping="Has part: Digital objects pointers as links" node="self::c08/mapper:copy-except('c09', .)" />
+            <use mapping="Has part: Digital objects pointers as links" node="self::c09/mapper:copy-except('c10', .)" />
+            <use mapping="Has part: Digital objects pointers as links" node="self::c10/mapper:copy-except('c11', .)" />
+            <use mapping="Has part: Digital objects pointers as links" node="self::c11/mapper:copy-except('c12', .)" />
+        </record>
+
+        <!-- One related record (is part of) for each digital archival object
+        ("dao"). -->
+        <record name="Digital Archival Object" process="true">
+            <use mapping="Digital Archival Object" type="base" />
+            <use mapping="Is part of" />
+            <!-- The original xpath is only needed to expose files when they are
+            separated. -->
+            <use mapping="Identifier: xpath" />
+        </record>
+    </records>
+</config>

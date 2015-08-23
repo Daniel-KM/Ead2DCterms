@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="XmlMapper/view/xml_mapper_table.xsl"?>
+<!--
+Convert Dublin Core Metadata Terms into Dublin Core Elements (1.1).
+
+For main description, see readme.md [https://github.com/Daniel-KM/Ead2DCterms].
+
+For technical notes, see xml_mapper_config.xml.
+
+@version: 20150824
+@see http://dublincore.org/specifications
+@copyright Daniel Berthereau, 2015
+@license CeCILL v2.1 http://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html
+@link https://github.com/Daniel-KM/Ead2DCterms
+-->
+<config>
+    <!-- These infos are the same as in mappings, and used only for the display. -->
+    <from name="DCMI Metadata Terms" prefix="dcterms" namespace="http://purl.org/dc/terms/" />
+    <to name="Dublin Core Elements" prefix="dc" namespace="http://purl.org/dc/elements/1.1/" />
+
+    <!-- Mapping between Dublin Core Metadata Terms and Dublin Core 1.1. -->
+    <option name="mappings" value="dcterms2dc_mappings.xml" />
+
+    <!-- Stylesheet used for rules that are not managed by the mapper currently.
+    NOTE This stylesheet should be imported by the mapper manually, or a
+    specific mapper should be done. -->
+    <option name="rules" value="" />
+
+    <!-- Default element name of the root and each record. -->
+    <option name="default_element_root" value="records" />
+    <option name="default_element_record" value="record" />
+
+    <!-- Prepend the prefix of the namespace to each element output. -->
+    <option name="output_prefix" value="true" />
+
+    <!-- Possibilities to add other namespaces. -->
+    <!-- <namespace prefix="" namespace="" /> -->
+
+    <!-- This base id will be used to create the unique identifier of each
+    record, that may be used to create relations between records. If no
+    attribute "from" is used, the one set in the mapping will be used.
+    -->
+    <baseid default="http://localhost/id" />
+
+    <!-- The simple mapping. -->
+    <records process="true"
+             element_root="records"
+             element_record="record"
+             record_name="true"
+             normalize_space="true"
+             deduplicate="true"
+             remove_empty="true"
+             order="true">
+        <record element="record" name="" process="true">
+            <use mapping="Dublin Core" type="base" />
+        </record>
+    </records>
+
+    <!-- The simple mapping with the label of the original term appended when
+    needed, so it can be reversed easily. -->
+    <records process="false"
+             element_root="records"
+             element_record="record"
+             record_name="true"
+             normalize_space="true"
+             deduplicate="true"
+             remove_empty="true"
+             order="true">
+        <record element="record" name="" process="true">
+            <use mapping="Dublin Core with the original term appended" type="base" />
+        </record>
+    </records>
+</config>

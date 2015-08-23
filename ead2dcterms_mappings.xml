@@ -1,0 +1,800 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="XmlMapper/view/xml_mapper_table.xsl"?>
+<!--
+Convert a finding aid in EAD to a list of records in Dublin Core Metadata Terms.
+
+For main description, see readme.md [https://github.com/Daniel-KM/Ead2DCterms].
+
+For technical notes, see xml_mapper_mappings.xml.
+
+Mapping
+=======
+
+This default mapping follows the rule "some data is better than none" and all the
+content of the ead is converted, except:
+- eadgroup, archdescgrp, dscgrp;
+- descgrp (to be done);
+- attributes (to be done);
+- only simple references for digital objects;
+- extrefloc and refloc data.
+
+It uses some attributes for some elements, in particular "authority" for
+subjects, types and coverage. This may be not standard, but this is commonly
+used. If you don't want them or want to use the more standard "xsi:type", update
+the mapping.
+
+By default, common content of "daogrp" (title and description) are copied in
+sub digital objects. No relation are made between component or digital objects
+themselves.
+
+Other mappings
+==============
+
+This mapping takes some ideas from other open source converters built by:
+- Anaphore (https://github.com/Anaphore/joai_xsl), derived from another tool
+used by the open source digital library Pleade (http://www.pleade.com)
+- Scholars' Lab at the University of Virginia Library (https://github.com/scholarslab/EadImporter),
+designed to import finding aids in Omeka, an open source digital library (https://omeka.org).
+
+These tools work fine. The main issues of these tools are that they are designed
+for the integration with another tool, the lack of documentation about the
+mapping, the partial coverage and the non-reversibility of the elements, and the
+mixture of the code and the mapping, making them heavy to maintain and hard to
+adapt to multiple interpretations of the EAD format.
+
+xpaths
+======
+
+Because xsl doesn't allow dynamic evaluation of paths, only simple expressions
+are supported, the main used for mappings.
+
+TODO
+====
+
+- Manage attribute "normal".
+- Manage attribute "audience" (internal/external) of each field.
+- Manage attribute "encoding analog" (automatic mapping via explicit terms for
+  Dublin Core or another format mapped with Dublin Core, else use this mapping
+  file).
+- Manage all other attributes.
+- Manage element descgrp.
+- Manage elements arc and resource.
+- Check dsc inside components (for relations and data).
+- Manage references and targets.
+- Add relations between components of same level or between sibling objects (is
+  format, is version, simple relation?).
+- Manage links outside of archdesc and daogrp.
+- Convert "emph"... as html5 and @render as css3?
+- Add a dcterms:type for digital objects, according to extension.
+
+@version: 20150824
+@see https://www.loc.gov/ead
+@see http://dublincore.org/specifications
+@copyright Daniel Berthereau, 2015
+@license CeCILL v2.1 http://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html
+@link https://github.com/Daniel-KM/Ead2DCterms
+-->
+<mappings>
+    <from name="EAD 2002" prefix="ead" namespace="http://www.loc.gov/ead" />
+    <to name="DCMI Metadata Terms" prefix="dcterms" namespace="http://purl.org/dc/terms/" />
+
+    <!-- Namespaces to add to the output, in addition to the main. -->
+    <namespace prefix="xsi" namespace="http://www.w3.org/2001/XMLSchema-instance" />
+    <namespace prefix="xlink" namespace="http://www.w3.org/1999/xlink" />
+
+    <!-- This base id will be used to create the unique identifier of each
+    record, that may be used to create relations between records.
+    By default, records are the finding aid, the archival description and each
+    components. Digital archival objects (files) are records too, but they use
+    their own id.
+    -->
+    <baseid from="/ead/eadheader/eadid/@url" />
+
+    <!-- Default order.
+    It can be overridden by the same attribute in a mapping. -->
+    <order order="Order" />
+
+    <!-- Mapping to merge "Header" and "Front Matter" (as descriptions). -->
+    <mapping name="Finding Aid">
+        <use mapping="Header" />
+        <map from="/ead/frontmatter/titlepage" to="description"
+             wrap="titlepage" />
+        <map from="/ead/frontmatter/div" to="description"
+             wrap="div" />
+    </mapping>
+
+    <!-- Mapping to merge "Header", "Front Matter" and "Archival Description". -->
+    <mapping name="Finding Aid + Archival Description">
+        <use mapping="Header" />
+        <use mapping="Archival Description + Description of Subordinate Components" />
+        <map from="/ead/frontmatter/titlepage" to="description" />
+        <map from="/ead/frontmatter/div" to="description" />
+    </mapping>
+
+    <!-- Mapping for a single "Header". -->
+    <mapping name="Header">
+        <map to="title" type="concatenation">
+            <from from="/ead/eadheader/filedesc/titlestmt/titleproper" />
+            <from from="/ead/eadheader/filedesc/titlestmt/subtitle"
+                  wrap="subtitle" />
+            <from from="/ead/eadheader/filedesc/editionstmt/edition"
+                  wrap="edition" />
+        </map>
+        <map from="" to="alternative" />
+        <map from="/ead/eadheader/filedesc/titlestmt/author" to="creator" />
+        <map from="/ead/eadheader/filedesc/notestmt/note/p/subject" to="subject"
+             mode="value">
+            <attribute from="@source" to="@authority" />
+        </map>
+        <!-- Keep these data with respective main statement? -->
+        <map from="/ead/eadheader/filedesc/editionstmt/p" to="description"
+             wrap="editionstmt" />
+        <map from="/ead/eadheader/filedesc/publicationstmt/p" to="description"
+             wrap="publicationstmt" />
+        <map from="/ead/eadheader/filedesc/notestmt/note" to="description"
+             wrap="notestmt">
+            <condition on="source" type="except_only" match="subject" />
+        </map>
+        <map from="/ead/eadheader/profiledesc/creation" to="description"
+             wrap="profiledesc/creation">
+            <condition on="source" type="except_only" match="date" />
+        </map>
+        <map from="/ead/eadheader/profiledesc/langusage" to="description"
+             wrap="profiledesc/langusage">
+            <condition on="source" type="except_only" match="language" />
+        </map>
+        <map from="/ead/eadheader/profiledesc/descrules" to="description"
+             wrap="profiledesc/descrules" />
+        <map from="/ead/eadheader/revisiondesc/change" to="description"
+             wrap="revisiondesc/change">
+            <condition on="source" type="except_only" match="date" />
+        </map>
+        <map from="/ead/eadheader/revisiondesc/list" to="description"
+             wrap="revisiondesc/list" />
+        <map from="" to="tableOfContents" />
+        <map from="" to="abstract" />
+        <map to="publisher" type="concatenation">
+            <from from="/ead/eadheader/filedesc/publicationstmt/publisher" />
+            <from from="/ead/eadheader/filedesc/publicationstmt/address"
+                wrap="address" />
+            <!-- TODO Check if "number" should be mapped to something else
+            (identifier? part? title like num?). -->
+            <from from="/ead/eadheader/filedesc/publicationstmt/num"
+                wrap="num" />
+        </map>
+        <map from="/ead/eadheader/filedesc/titlestmt/sponsor" to="contributor" />
+        <!-- TODO Condition against the source, not the mapped result? -->
+        <map from="/ead/eadheader/filedesc/titlestmt/titleproper/date" to="date">
+            <condition on="result" type="different" match="issued" />
+        </map>
+        <map from="/ead/eadheader/filedesc/titlestmt/subtitle/date" to="date">
+            <condition on="result" type="different" match="issued" />
+        </map>
+        <map from="/ead/eadheader/profiledesc/creation/date" to="created" />
+        <map from="" to="valid" />
+        <map from="" to="available" />
+        <map from="/ead/eadheader/filedesc/publicationstmt/date" to="issued" />
+        <map from="/ead/eadheader/revisiondesc/change/date" to="modified" />
+        <map from="" to="dateAccepted" />
+        <map from="" to="dateCopyrighted" />
+        <map from="" to="dateSubmitted" />
+        <map from="" to="type">
+            <condition on="result" type="add" value="Archival Finding Aid" />
+            <condition on="result" type="add" value="dataset" />
+            <condition on="result" type="add" value="text" />
+        </map>
+        <map from="" to="format">
+            <condition on="result" type="add" value="text/xml" />
+        </map>
+        <map from="" to="extent" />
+        <map from="" to="medium" />
+        <!-- TODO Add country code and main agency (and any other attributes). -->
+        <map from="/ead/eadheader/eadid" to="identifier" />
+        <map from="/ead/eadheader/eadid/@publicid" to="identifier" />
+        <map from="/ead/eadheader/eadid/@url" to="identifier">
+            <attribute from="" to="@xsi:type" default="dcterms:URI" />
+         </map>
+        <map from="/ead/eadheader/eadid/@urn" to="identifier">
+            <attribute from="" to="@xsi:type" default="dcterms:URI" />
+        </map>
+        <map from="" to="bibliographicCitation" />
+        <map from="" to="source" />
+        <map from="/ead/eadheader/profiledesc/creation/langusage/language" to="language" />
+        <map from="" to="relation" />
+        <map from="" to="isVersionOf" />
+        <map from="" to="hasVersion" />
+        <map from="" to="replaces" />
+        <map from="" to="isReplacedBy" />
+        <map from="" to="isRequiredBy" />
+        <map from="" to="requires" />
+        <map to="isPartOf" type="concatenation">
+            <from from="/ead/eadheader/filedesc/seriesstmt/titleproper" />
+            <from from="/ead/eadheader/filedesc/seriesstmt/num"
+                wrap="num" />
+        </map>
+        <map from="/ead/eadheader/filedesc/seriesstmt/p" to="isPartOf" />
+        <map from="" to="hasPart" />
+        <map from="" to="isReferencedBy" />
+        <map from="" to="references" />
+        <map from="" to="isFormatOf" />
+        <map from="" to="hasFormat" />
+        <map from="" to="conformsTo">
+            <!-- <condition on="result" type="add" value="EAD DTD" /> -->
+        </map>
+        <map from="" to="coverage" />
+        <map from="" to="spatial" />
+        <map from="" to="temporal" />
+        <map from="" to="rights" />
+        <map from="" to="accessRights" />
+        <map from="" to="license" />
+        <map from="/ead/eadheader/@audience" to="audience">
+            <!-- <condition on="result" type="default" value="external" /> -->
+        </map>
+        <map from="" to="mediator" />
+        <map from="" to="educationLevel" />
+        <map from="" to="accrualMethod" />
+        <map from="" to="accrualPeriodicity" />
+        <map from="" to="accrualPolicy" />
+        <map from="" to="instructionalMethod" />
+        <map from="" to="provenance" />
+        <map from="" to="rightsHolder" />
+    </mapping>
+
+    <!-- Mapping to convert the Front Matter as a single record. -->
+    <mapping name="Front Matter">
+        <map to="title" type="concatenation">
+            <from from="/ead/frontmatter/titlepage/titleproper" />
+            <from from="/ead/frontmatter/titlepage/subtitle"
+                wrap="subtitle" />
+            <from from="/ead/frontmatter/titlepage/edition"
+                wrap="edition" />
+        </map>
+        <map from="" to="alternative" />
+        <map from="/ead/frontmatter/titlepage/author" to="creator" />
+        <map from="/ead/frontmatter/titlepage/p/subject" to="subject">
+            <attribute from="@source" to="@authority" />
+        </map>
+        <map from="/ead/frontmatter/titlepage/blockquote" to="description"
+             wrap="titlepage/blockquote" />
+        <map from="/ead/frontmatter/titlepage/chronlist" to="description"
+             wrap="titlepage/chronlist" />
+        <map from="/ead/frontmatter/titlepage/list" to="description"
+             wrap="titlepage/list" />
+        <map from="/ead/frontmatter/titlepage/note" to="description"
+             wrap="titlepage/note" />
+        <map from="/ead/frontmatter/titlepage/p" to="description"
+             wrap="titlepage/p">
+            <condition on="source" type="except_only" match="subject" />
+        </map>
+        <map from="/ead/frontmatter/titlepage/table" to="description"
+             wrap="titlepage/table" />
+        <map from="/ead/frontmatter/div" to="description"
+             wrap="div" />
+        <map from="" to="tableOfContents" />
+        <map from="" to="abstract" />
+        <map to="publisher" type="concatenation">
+            <from from="/ead/frontmatter/titlepage/publisher" />
+            <from from="/ead/frontmatter/titlepage/address"
+                wrap="address" />
+            <!-- TODO Check if "number" should be mapped to something else
+            (identifier? part? title like num?). -->
+            <from from="/ead/frontmatter/titlepage/num"
+                wrap="num" />
+        </map>
+        <map from="/ead/frontmatter/titlepage/sponsor" to="contributor" />
+        <map from="/ead/frontmatter/titlepage/date" to="date" />
+        <map from="/ead/frontmatter/titlepage/titleproper/date" to="date" />
+        <map from="/ead/frontmatter/titlepage/subtitle/date" to="date" />
+        <map from="" to="created" />
+        <map from="" to="valid" />
+        <map from="" to="available" />
+        <map from="" to="issued" />
+        <map from="" to="modified" />
+        <map from="" to="dateAccepted" />
+        <map from="" to="dateCopyrighted" />
+        <map from="" to="dateSubmitted" />
+        <map from="" to="type">
+            <condition on="result" type="add" value="Archival finding aid" />
+            <condition on="result" type="add" value="text" />
+        </map>
+        <map from="" to="format" />
+        <map from="" to="extent" />
+        <map from="" to="medium" />
+        <map from="" to="identifier" />
+        <map from="" to="bibliographicCitation" />
+        <map from="" to="source" />
+        <map from="" to="language" />
+        <map from="" to="relation" />
+        <map from="" to="isVersionOf" />
+        <map from="" to="hasVersion" />
+        <map from="" to="replaces" />
+        <map from="" to="isReplacedBy" />
+        <map from="" to="isRequiredBy" />
+        <map from="" to="requires" />
+        <map from="/ead/frontmatter/titlepage/bibseries" to="isPartOf" />
+        <map from="" to="hasPart" />
+        <map from="" to="isReferencedBy" />
+        <map from="" to="references" />
+        <map from="" to="isFormatOf" />
+        <map from="" to="hasFormat" />
+        <map from="" to="conformsTo" />
+        <map from="" to="coverage" />
+        <map from="" to="spatial" />
+        <map from="" to="temporal" />
+        <map from="" to="rights" />
+        <map from="" to="accessRights" />
+        <map from="" to="license" />
+        <map from="/ead/frontmatter/@audience" to="audience" />
+        <map from="" to="mediator" />
+        <map from="" to="educationLevel" />
+        <map from="" to="accrualMethod" />
+        <map from="" to="accrualPeriodicity" />
+        <map from="" to="accrualPolicy" />
+        <map from="" to="instructionalMethod" />
+        <map from="" to="provenance" />
+        <map from="" to="rightsHolder" />
+    </mapping>
+
+    <mapping name="Archival Description">
+        <use mapping="Unit" node="/ead/archdesc" />
+    </mapping>
+
+    <!-- Mapping to manage full "Archival Description" (with the main "dsc"). -->
+    <mapping name="Archival Description + Description of Subordinate Components">
+        <use mapping="Archival Description" />
+        <map from="/ead/archdesc/dsc/mapper:copy-except('c|c01', .)" to="description"
+             wrap="dsc" />
+    </mapping>
+
+    <!-- Mapping to manage the main "dsc" separately. -->
+    <mapping name="Description of Subordinate Components">
+        <map from="" to="title">
+            <condition on="result" type="add" value="Description of Subordinate Components" />
+        </map>
+        <map from="/ead/archdesc/dsc/mapper:copy-except('c|c01', .)" to="description" />
+    </mapping>
+
+    <!-- Mapping to manage each component. -->
+    <mapping name="Component"
+        root="/ead/archdesc/dsc//c|c01|c02|c03|c04|c05|c06|c07|c08|c09|c10|c11|c12">
+        <use mapping="Unit" />
+    </mapping>
+
+    <!-- Archival Description and Components are very similar (identical, except
+    that components allow "cXX", "head" and "thead", but no "runner"). So this
+    common mapping may be used for any unit. The non-existing elements will be
+    skipped. -->
+    <mapping name="Unit" type="partial">
+        <!-- The unit title may be divided for some finding aids (unitdate...). -->
+        <map from="did/unittitle" to="title" />
+        <!-- Achival Description only. -->
+        <!-- Use it as "title" or "alternative" if merged with main. -->
+        <map from="runner" to="alternative" />
+        <!-- TODO Normalize some sub-elements ("persname"... have a @normal). -->
+        <map from="did/origination" to="creator" />
+        <!-- TODO Allow tokenisation of "from" source field. -->
+        <map from="controlaccess//corpname" to="subject"
+             mode="value" wrap="corpname">
+            <attribute from="@source" to="@authority" />
+        </map>
+        <map from="controlaccess//famname" to="subject"
+             mode="value" wrap="famname">
+            <attribute from="@source" to="@authority" />
+        </map>
+        <map from="controlaccess//function" to="subject"
+             mode="value" wrap="function">
+            <attribute from="@source" to="@authority" />
+        </map>
+        <map from="controlaccess//genreform" to="subject"
+             mode="value" wrap="genreform">
+            <attribute from="@source" to="@authority" />
+        </map>
+        <!-- "geogname" is converted as "spatial coverage". -->
+        <map from="controlaccess//name" to="subject"
+             mode="value" wrap="name">
+            <attribute from="@source" to="@authority" />
+        </map>
+        <map from="controlaccess//occupation" to="subject"
+             mode="value" wrap="occupation">
+            <attribute from="@source" to="@authority" />
+        </map>
+        <map from="controlaccess//persname" to="subject"
+             mode="value" wrap="persname">
+            <attribute from="@source" to="@authority" />
+        </map>
+        <map from="controlaccess//subject" to="subject"
+             mode="value" wrap="subject">
+            <attribute from="@source" to="@authority" />
+        </map>
+        <map from="controlaccess//title" to="subject"
+             mode="value" wrap="title">
+            <attribute from="@source" to="@authority" />
+        </map>
+        <!-- This allows to keep textual content around subjects, but it can be
+        duplicates. -->
+        <!-- TODO Remove duplicates of sub-controlaccess or sujbects. -->
+        <map from="controlaccess" to="subject"
+             wrap="controlaccess" />
+        <map from="appraisal" to="description"
+             wrap="appraisal" />
+        <map from="arrangement" to="description"
+             wrap="arrangement" />
+        <map from="bioghist" to="description"
+             wrap="bioghist" />
+        <map from="note" to="description"
+             wrap="note" />
+        <map from="odd" to="description"
+             wrap="odd" />
+        <map from="processinfo" to="description"
+             wrap="processinfo" />
+        <map from="scopecontent" to="description"
+             wrap="scopecontent" />
+        <!-- TODO The head is useless without the following element(s), in
+        particular when it is used as a simple label, so add it to the following
+        element. Manage "descgrp" too. -->
+        <map from="did/head" to="description"
+             wrap="did/head" />
+        <map from="did/note" to="description"
+             wrap="did/note" />
+        <!-- Components only. -->
+        <map from="head" to="description"
+             wrap="head" />
+        <!-- Components only. -->
+        <map from="thead" to="description"
+             wrap="thead" />
+        <map from="fileplan" to="tableOfContents"
+             wrap="fileplan" />
+        <map from="index" to="tableOfContents"
+             wrap="index" />
+        <map from="did/abstract" to="abstract" />
+        <map from="did/repository" to="publisher" />
+        <map from="" to="contributor" />
+        <!-- The "unitdate" is the creation date, or any other relevant dates. -->
+        <map from="did/unitdate" to="date" />
+        <map from="" to="created" />
+        <map from="" to="valid" />
+        <map from="" to="available" />
+        <map from="" to="issued" />
+        <map from="" to="modified" />
+        <map from="" to="dateAccepted" />
+        <map from="" to="dateCopyrighted" />
+        <map from="" to="dateSubmitted" />
+        <map from="@level" to="type" wrap="level">
+            <condition on="source" type="except_match" match="otherlevel" />
+        </map>
+        <map from="@otherlevel" to="type" wrap="otherlevel" />
+        <map from="did/physdesc/genreform" to="type"
+             mode="value" wrap="physdesc">
+            <attribute from="@source" to="@authority" />
+        </map>
+        <!-- Or as an intellectual description of the format (in "description")? -->
+        <map from="did/materialspec" to="format"
+             wrap="materialspec" />
+        <map from="did/physdesc" to="format"
+             wrap="physdesc">
+            <condition on="source" type="except_only" match="dimensions|extent|genreform|physfacet" />
+        </map>
+        <!-- TODO Select different types (via the attribute or the head). -->
+        <map from="did/physdesc/physfacet" to="format"
+             wrap="physfacet" />
+        <map from="did/physdesc/dimensions" to="extent"
+             wrap="dimensions" />
+        <map from="did/physdesc/extent" to="extent"
+             wrap="extent" />
+        <map from="phystech" to="medium"
+             wrap="phystech" />
+        <!-- TODO Normalize (there may be a machine readable id). -->
+        <map to="identifier" type="concatenation">
+            <from from="did/unitid" />
+            <from from="did/unitid/@countrycode"
+                  wrap="countrycode" />
+            <from from="did/unitid/@repositorycode"
+                  wrap="repositorycode" />
+        </map>
+        <map to="identifier" type="concatenation"
+             prepend="Location: ">
+            <from from="did/physloc" />
+            <from from="did/container"
+                  wrap="container" />
+        </map>
+        <map from="prefercite" to="bibliographicCitation" />
+        <map from="originalsloc" to="source" />
+        <!-- Normalized language names may be available too as sub-elements. -->
+        <map from="did/langmaterial" to="language" />
+        <!-- Related and separated materials may be mapped as references. -->
+        <map from="relatedmaterial" to="relation"
+             wrap="relatedmaterial" />
+        <map from="separatedmaterial" to="relation"
+             wrap="relatedmaterial" />
+        <map from="" to="isVersionOf" />
+        <map from="" to="hasVersion" />
+        <map from="" to="replaces" />
+        <map from="" to="isReplacedBy" />
+        <map from="" to="isRequiredBy" />
+        <map from="" to="requires" />
+        <map from="" to="isPartOf" />
+        <map from="" to="hasPart" />
+        <map from="" to="isReferencedBy" />
+        <map from="bibliography" to="references" />
+        <map from="otherfindaid" to="references"
+             wrap="otherfindaid" />
+        <map from="" to="isFormatOf" />
+        <map from="altformavail" to="hasFormat" />
+        <map from="" to="conformsTo" />
+        <map from="" to="coverage" />
+        <map from="controlaccess//geogname" to="spatial"
+             mode="value">
+            <!-- "authority" may be not standard. -->
+            <attribute from="@source" to="@authority" />
+        </map>
+        <map from="" to="temporal" />
+        <!-- Usage restrictions can be set as "licence" in some cases. -->
+        <map from="userestrict" to="rights" />
+        <map from="accessrestrict" to="accessRights" />
+        <map from="" to="license" />
+        <map from="" to="audience" />
+        <map from="" to="mediator" />
+        <map from="" to="educationLevel" />
+        <map from="" to="accrualMethod" />
+        <map from="" to="accrualPeriodicity" />
+        <map from="accruals" to="accrualPolicy" />
+        <map from="" to="instructionalMethod" />
+        <map from="acqinfo" to="provenance" />
+        <map from="custodhist" to="provenance"
+             wrap="custodhist" />
+        <map from="" to="rightsHolder" />
+    </mapping>
+
+    <!-- Final digital objects. -->
+
+    <!-- Digital Archival Object (only "dao"). -->
+    <mapping name="Digital Archival Object" root="/ead//dao">
+        <map from="@title" to="title" />
+        <map from="daodesc" to="description" />
+        <map from="@entityref" to="identifier" />
+        <map from="@href" to="identifier">
+            <attribute from="" to="@xsi:type" default="dcterms:URI" />
+        </map>
+        <!-- TODO Manage pointers. -->
+        <!-- <map from="@xpointer" to="identifier" /> -->
+    </mapping>
+
+    <!-- Digital Archival Object (only "daogrp")., as a separated level. -->
+    <mapping name="Digital Archival Object Group" root="/ead//daogrp">
+        <map from="@title" to="title" />
+        <map from="daodesc" to="description" />
+    </mapping>
+
+    <!-- Digital Archival Object (only "daogrp"), used to copy common content in
+    each dependant object. -->
+    <mapping name="Digital Archival Object Group common" base="ancestor::daogrp[1]" type="partial">
+        <map from="@title" to="title" />
+        <map from="daodesc" to="description" />
+    </mapping>
+
+    <!-- Digital Archival Object Group: pointers are all links inside a "daogrp". -->
+    <mapping name="Digital Archival Object Group pointers"
+             root="/ead//daogrp//daoloc|extptrloc|ptrloc|extrefloc|refloc">
+        <map from="@title" to="title" />
+        <!-- Sub-element used only for "daoloc". -->
+        <map from="daodesc" to="description" />
+        <!-- Sub-content used only for "extrefloc". -->
+        <map from="self::extrefloc" to="description"
+             wrap="extrefloc" />
+        <!-- Sub-content used only for "refloc". -->
+        <map from="self::refloc" to="description"
+             wrap="refloc" />
+        <map from="@entityref" to="identifier" />
+        <map from="@href" to="identifier">
+            <attribute from="" to="@xsi:type" default="dcterms:URI" />
+        </map>
+        <map from="@target" to="identifier" />
+    </mapping>
+
+    <!-- Digital Archival Object Group: locations are all links inside a
+    "daogrp", except references. -->
+    <mapping name="Digital Archival Object Group locations"
+             root="/ead//daogrp//daoloc|extptrloc|ptrloc">
+        <map from="@title" to="title" />
+        <!-- Sub-element used only for "daoloc". -->
+        <map from="daodesc" to="description" />
+        <map from="@entityref" to="identifier" />
+        <map from="@href" to="identifier">
+            <attribute from="" to="@xsi:type" default="dcterms:URI" />
+        </map>
+        <map from="@target" to="identifier" />
+    </mapping>
+
+    <!-- Digital Archival Object Group: references are all links inside a
+    "daogrp", except locations. -->
+    <mapping name="Digital Archival Object Group references"
+             root="/ead//daogrp//extrefloc|refloc">
+        <map from="@title" to="title" />
+        <!-- Sub-content used only for extrefloc. -->
+        <map from="self::extrefloc" to="description"
+             wrap="extrefloc" />
+        <!-- Sub-content used only for refloc. -->
+        <map from="self::refloc" to="description"
+             wrap="refloc" />
+        <map from="@entityref" to="identifier" />
+        <map from="@href" to="identifier">
+            <attribute from="" to="@xsi:type" default="dcterms:URI" />
+        </map>
+        <map from="@target" to="identifier" />
+    </mapping>
+
+    <!-- Identifiers and Relations. -->
+    <!-- Mappings to add inside a main one according to the source and needs. -->
+
+    <!-- Identifiers. -->
+
+    <!-- Simple, unique and absolute xpath of the current node. -->
+    <mapping name="Identifier: xpath" type="identifier">
+        <map from="mapper:get-absolute-xpath(.)" to="identifier" />
+    </mapping>
+
+    <!-- Identifier for Finding Aid, Archival Description and any Component:
+    base id (main url by default) and xpath.
+    TODO May be the collection number for Archival Description, etc.
+    -->
+    <mapping name="Identifier: baseid/xpath" type="identifier">
+        <map to="identifier" type="concatenation">
+            <attribute from="" to="@xsi:type" default="dcterms:URI" />
+            <from from="mapper:get-base-id()" />
+            <from from="mapper:get-absolute-xpath(.)" />
+        </map>
+    </mapping>
+
+    <!-- Identifier for Finding Aid, Archival Description and any Component:
+    ead id and xpath. -->
+    <mapping name="Identifier: eadid xpath" type="identifier">
+        <map to="identifier" type="concatenation">
+            <from from="/ead/eadheader/eadid" format="%1 " />
+            <from from="mapper:get-absolute-xpath(.)" />
+        </map>
+    </mapping>
+
+    <!-- Is part of. -->
+
+    <!-- Set a relation "Is part of" the parent part or component. -->
+    <mapping name="Is part of" type="relation">
+        <!-- This can be replaced by an xpath, but the dynamic xpath evaluator
+        can't process it currently. -->
+        <map from="mapper:get-ancestor-identifier(.)" to="isPartOf">
+            <attribute from="" to="@xsi:type" default="dcterms:URI" />
+        </map>
+    </mapping>
+
+    <!-- Has part. -->
+
+    <!-- Set a relation "Has part" for the Archival Description. -->
+    <mapping name="Has part: Archival Description" type="relation">
+        <map from="mapper:get-identifier(/ead/archdesc)" to="hasPart">
+            <attribute from="" to="@xsi:type" default="dcterms:URI" />
+        </map>
+    </mapping>
+
+    <!-- Set a relation "Has part" for any Component that depends directly. -->
+    <mapping name="Has part: Components" type="relation">
+        <map from="c|c01|c02|c03|c04|c05|c06|c07|c08|c09|c10|c11|c12/mapper:get-identifier(.)" to="hasPart">
+            <attribute from="" to="@xsi:type" default="dcterms:URI" />
+        </map>
+    </mapping>
+
+    <!-- Set a relation "Has part" for any Digital archival object or pointers
+    that depends directly. -->
+    <mapping name="Has part: Digital objects as records" type="relation">
+        <use mapping="Has part: Digital archival objects as records" />
+        <use mapping="Has part: Digital objects pointers as records" />
+    </mapping>
+
+    <!-- Set a relation "Has part" for any Digital archival object that depends
+    directly. -->
+    <mapping name="Has part: Digital archival objects as records" type="relation">
+        <map from="//dao/@entityref" to="hasPart" />
+        <map from="//dao/@href" to="hasPart">
+            <attribute from="" to="@xsi:type" default="dcterms:URI" />
+        </map>
+        <!-- <map from="//dao/@xpointer" to="hasPart" /> -->
+    </mapping>
+
+    <!-- Set a relation "Has part" for any Digital object pointers that depends
+    directly. -->
+    <mapping name="Has part: Digital objects pointers as records" type="relation">
+        <map from="//daoloc|extptrloc|ptrloc|extrefloc|refloc/@entityref" to="hasPart" />
+        <map from="//daoloc|extptrloc|ptrloc|extrefloc|refloc/@href" to="hasPart">
+            <attribute from="" to="@xsi:type" default="dcterms:URI" />
+        </map>
+        <map from="//daoloc|extptrloc|ptrloc|extrefloc|refloc/@target" to="hasPart" />
+    </mapping>
+
+    <!-- Has format. -->
+
+    <!-- Set a relation "Has format" for any Digital archival object or pointers
+    that depends directly. -->
+    <mapping name="Has format: Digital objects as links" type="relation">
+        <use mapping="Has part: Digital archival objects as links" />
+        <use mapping="Has part: Digital objects pointers as links" />
+    </mapping>
+
+    <!-- Set a relation "Has format" for any Digital archival object that
+    depends directly. -->
+    <mapping name="Has part: Digital archival objects as links" type="relation">
+        <map from="//dao/@entityref" to="hasFormat" />
+        <map from="//dao/@href" to="hasFormat">
+            <attribute from="" to="@xsi:type" default="dcterms:URI" />
+        </map>
+        <!-- <map from="//dao/@xpointer" to="hasFormat" /> -->
+    </mapping>
+
+    <!-- Set a relation "Has format" for any Digital object pointers that
+    depends directly. -->
+    <mapping name="Has part: Digital objects pointers as links" type="relation">
+        <map from="//daoloc|extptrloc|ptrloc|extrefloc|refloc/@entityref" to="hasFormat" />
+        <map from="//daoloc|extptrloc|ptrloc|extrefloc|refloc/@href" to="hasFormat">
+            <attribute from="" to="@xsi:type" default="dcterms:URI" />
+        </map>
+        <map from="//daoloc|extptrloc|ptrloc|extrefloc|refloc/@target" to="hasFormat" />
+    </mapping>
+
+    <!-- Mapping used for the default order.
+    Any mapping can be used for sort map, but this one avoids to repeat all maps
+    in the base mapping. -->
+    <mapping name="Order" type="order" order="Order">
+        <map to="title" />
+        <map to="alternative" />
+        <map to="creator" />
+        <map to="subject" />
+        <map to="description" />
+        <map to="tableOfContents" />
+        <map to="abstract" />
+        <map to="publisher" />
+        <map to="contributor" />
+        <map to="date" />
+        <map to="created" />
+        <map to="valid" />
+        <map to="available" />
+        <map to="issued" />
+        <map to="modified" />
+        <map to="dateAccepted" />
+        <map to="dateCopyrighted" />
+        <map to="dateSubmitted" />
+        <map to="type" />
+        <map to="format" />
+        <map to="extent" />
+        <map to="medium" />
+        <map to="identifier" />
+        <map to="bibliographicCitation" />
+        <map to="source" />
+        <map to="language" />
+        <map to="relation" />
+        <map to="isVersionOf" />
+        <map to="hasVersion" />
+        <map to="replaces" />
+        <map to="isReplacedBy" />
+        <map to="isRequiredBy" />
+        <map to="requires" />
+        <map to="isPartOf" />
+        <map to="hasPart" />
+        <map to="isReferencedBy" />
+        <map to="references" />
+        <map to="isFormatOf" />
+        <map to="hasFormat" />
+        <map to="conformsTo" />
+        <map to="coverage" />
+        <map to="spatial" />
+        <map to="temporal" />
+        <map to="rights" />
+        <map to="accessRights" />
+        <map to="license" />
+        <map to="audience" />
+        <map to="mediator" />
+        <map to="educationLevel" />
+        <map to="accrualMethod" />
+        <map to="accrualPeriodicity" />
+        <map to="accrualPolicy" />
+        <map to="instructionalMethod" />
+        <map to="provenance" />
+        <map to="rightsHolder" />
+    </mapping>
+</mappings>

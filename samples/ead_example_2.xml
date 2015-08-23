@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ead xmlns="http://www.loc.gov/ead">
+    <eadheader countryencoding="iso3166-1" repositoryencoding="iso15511" langencoding="iso639-2b" relatedencoding="marc">
+        <eadid countrycode="us" repositorycode="mnhi">terr06</eadid>
+        <filedesc>
+            <titlestmt>
+                <titleproper>MINNESOTA TERRITORIAL ARCHIVES. Territorial Governor:
+            </titleproper>
+                <subtitle> An Inventory of Territorial Governor Willis A. Gorman</subtitle>
+                <author>Finding aid prepared by Lydia Lucas.</author>
+            </titlestmt>
+        </filedesc>
+        <profiledesc>
+            <creation>Finding aid encoded by Lyda Morehouse, <date>July 17, 2002.</date></creation>
+        </profiledesc>
+    </eadheader>
+    <archdesc level="series">
+        <did id="a1">
+            <head>OVERVIEW OF THE RECORDS</head>
+            <repository label="Repository:">Minnesota Historical Society</repository>
+            <origination label="Creator:">Agency:Minnesota. Governor (1853-1857 : Gorman).
+        </origination>
+            <unittitle label="Title:">Series Records of territorial governor Willis A. Gorman,
+        </unittitle>
+            <unitdate label="Date:">1852-1857.</unitdate>
+            <abstract label="Abstract:">Subject files, correspondence, appointments, pardon
+        records, reports from territorial officers, requests for return of fugitives, and
+        miscellany.</abstract>
+            <physdesc label="Quantity:">0.75 cu. ft. (23 folders in 2 partial boxes).</physdesc>
+            <physloc label="Location:">See Detailed Description section for box locations.</physloc>
+        </did>
+        <bioghist>
+            <head id="a2">BIOGRAPHICAL SKETCH OF GOVERNOR WILLIS A. GORMAN</head>
+            <p>Willis Arnold Gorman was born in Kentucky on January 12, 1816. His early career was
+        as a lawyer and state legislator (Democrat) in Indiana. During the Mexican War he raised and
+        commanded an Indiana rifle battalion and an infantry regiment, and subsequently was elected
+        to two terms in the U.S. Congress. President Franklin Pierce appointed him Governor of
+        Minnesota in May 13, 1853, and he served in that office until 1857. He was subsequently a
+        delegate to the state constitutional convention (1857) and was elected to the first state
+        legislature (1858).</p>
+            <p>At the outset of the Civil War he commanded the First Minnesota Infantry Volunteers
+        (April-October, 1861) until his promotion to brigadier general. Following his discharge from
+        military service in 1864, he practiced law in St. Paul in partnership with Cushman K. Davis.
+        In 1869 he was appointed St. Paul city attorney, and held that office until his death on May
+        20, 1876.</p>
+            <p>Sources: <emph render="italic">Minnesota Biographies</emph>, pp. 267-
+        268; <emph render="italic">Minnesota in the Civil and Indian Wars</emph>, Vol.
+        I, p. 14; William Watts Folwell, <emph render="italic">A History of Minnesota
+        </emph> (St. Paul, rev. 1956), Vol. I, pp. 377-383; Theodore C. Blegen, <emph render="italic">Minnesota, A History of the State</emph> (1963), pp. 171, 240-242,
+        293.</p>
+        </bioghist>
+        <scopecontent>
+            <head id="a3">SCOPE AND CONTENTS OF THE RECORDS</head>
+            <p>Subject files and correspondence of territorial governor Gorman. A large proportion
+        relate to territorial officers' appointments and commissions. Letters received and sent
+        address the following topics: concerns of federal civilian agencies, military and Indian
+        affairs in general, the 1855 treaty with the Winnebago Indians, land sales, the Minnesota
+        and Northwestern Railroad Company, and other territorial affairs. Also present are a
+        legislative diary (Jan. 27-March 6, 1857), pardon records, petitions regarding local
+        government organization, reports from territorial officers, and requests from other states
+        for return of fugitives.</p>
+            <p>Gorman's governorship spanned a period of both tangible and speculative growth in
+        the state's infrastructure and economy, with numerous railroads, educational institutions,
+        and corporations being chartered, new counties established, new towns incorporated, and
+        several Indian treaties ratified. The surviving records contain only sketchy information on
+        these developments, and do not appear to contain any significant documentation on an
+        abortive 1857 scheme to remove the state capital from St. Paul to St. Peter.</p>
+        </scopecontent>
+        <arrangement>
+            <head id="a4">ARRANGEMENT OF THE RECORDS</head>
+            <p>Arranged alphabetically by topic; thereunder chronologically within each
+        folder.</p>
+        </arrangement>
+        <controlaccess>
+            <head id="a7">INDEX TERMS</head>
+            <p>
+                <emph render="italic">This collection is indexed under the following
+        headings in the catalog of the Minnesota Historical Society. Researchers desiring materials
+        about related topics, persons or places should search the catalog using these headings.
+        </emph>
+            </p>
+            <controlaccess>
+                <head>Topics:</head>
+                <subject>Civil-military relations--Minnesota.</subject>
+                <subject>Extraditions--Minnesota.</subject>
+                <subject>Federal government--Minnesota.</subject>
+                <subject>Indians of North America—Government relations--1789-1869.</subject>
+                <subject>Land titles--Minnesota--Registration and transfer.</subject>
+                <subject>Pardons--Minnesota.</subject>
+                <subject>Winnebago Indians--Treaties.</subject>
+            </controlaccess>
+            <controlaccess>
+                <head>Places:</head>
+                <geogname>Minnesota--Officials and employees--Selection and appointment.</geogname>
+                <geogname>Minnesota--Politics and government--1849-1858.</geogname>
+            </controlaccess>
+            <controlaccess>
+                <head>Persons:</head>
+                <persname>Gorman, Willis Arnold, 1816-1876.</persname>
+            </controlaccess>
+            <controlaccess>
+                <head>Organizations:</head>
+                <corpname>Minnesota Territory.</corpname>
+            </controlaccess>
+            <controlaccess>
+                <head>Types of Documents:</head>
+                <genreform>Diaries--Minnesota.</genreform>
+                <genreform>Petitions--Minnesota.</genreform>
+                <genreform>Proclamations--Minnesota.</genreform>
+                <genreform>Territorial records--Minnesota.</genreform>
+            </controlaccess>
+        </controlaccess>
+        <prefercite>
+            <head>Preferred Citation:</head>
+            <p>
+                <emph render="italic">[Indicate the cited volume and page or item and folder
+    title here].</emph> Minnesota Territorial Archives. Records of territorial governor Willis
+    Gorman. Minnesota Historical Society. State Archives.</p>
+            <p>
+                <emph render="italic">See the Chicago Manual of Style for additional
+    examples.</emph>
+            </p>
+        </prefercite>
+        <acqinfo>
+            <head>Accession Information:</head>
+            <p>Accession number(s): none; 2001-46</p>
+        </acqinfo>
+        <processinfo>
+            <head>Processing Information:</head>
+            <p>PALS ID No.: 0800011304</p>
+            <p>RLIN ID No.: MNHV90-A1172</p>
+        </processinfo>
+        <dsc type="combined" id="fruin" audience="external">
+            <head id="a9">DETAILED DESCRIPTION OF THE RECORDS</head>
+            <p id="MHSLoc">
+                <emph render="italic">Note to Researchers: To request materials,
+    please note both the location and box numbers shown below.</emph>
+            </p>
+            <c01>
+                <did>
+                    <physloc>115.I.19.8F</physloc>
+                    <container>[1]</container>
+                    <unittitle>Appointments: Commission of Deeds, </unittitle>
+                    <unitdate>1853-1857. </unitdate>
+                    <physdesc>1 folder.</physdesc>
+                </did>
+                <scopecontent>
+                    <p>For each individual, may include any of the following: application, petition,
+        recommendations, letter of resignation.</p>
+                </scopecontent>
+            </c01>
+            <c01>
+                <did>
+                    <unittitle>Appointments: Counties, </unittitle>
+                    <unitdate>1853-1857. </unitdate>
+                    <physdesc>1 folder.</physdesc>
+                </did>
+                <scopecontent>
+                    <p>For each individual, may include any of the following: application, petition,
+        recommendations, letter of resignation. Arranged alphabetically by county.</p>
+                </scopecontent>
+            </c01>
+            <c01>
+                <did>
+                    <unittitle>Appointments: Notary Public, </unittitle>
+                    <unitdate>undated and 1853-1857. </unitdate>
+                    <physdesc>4 folders. </physdesc>
+                </did>
+                <scopecontent>
+                    <p>For each individual, may include any of the following: application, petition,
+        recommendations, letter of resignation.</p>
+                </scopecontent>
+            </c01>
+            <c01>
+                <did>
+                    <unittitle>Appointments: Territorial Offices, </unittitle>
+                    <unitdate>1853-1857. </unitdate>
+                </did>
+                <scopecontent>
+                    <p>May include any of the following: application, petition, recommendations, letter of
+        resignation, for commissioner of emigration, librarian, superintendent of common schools,
+        auditor, treasurer, building commissioner, supreme court reporter, militia, and land
+        office.</p>
+                </scopecontent>
+            </c01>
+            <c01>
+                <did>
+                    <unittitle>Commissions, </unittitle>
+                    <unitdate>1855-1857. </unitdate>
+                    <physdesc>5 items.</physdesc>
+                </did>
+                <scopecontent>
+                    <p>For notary public, justice of the peace, and building commissioner.</p>
+                </scopecontent>
+            </c01>
+            <c01>
+                <did>
+                    <unittitle>Document Transmittals, Receipts, and Requests, </unittitle>
+                    <unitdate>1853-1857. </unitdate>
+                    <physdesc>1 folder. </physdesc>
+                </did>
+            </c01>
+            <c01>
+                <did>
+                    <unittitle>Legislative Diary, 1</unittitle>
+                    <unitdate>1857. </unitdate>
+                    <physdesc>1 volume </physdesc>
+                </did>
+                <scopecontent>
+                    <p>Fragmentary entries, January 27 - March 6, showing numbers and titles of bills.</p>
+                </scopecontent>
+            </c01>
+            <c01>
+                <did>
+                    <unittitle>Letters Received: Federal Civilian Agencies, 18</unittitle>
+                    <unitdate>1853-1857. </unitdate>
+                    <physdesc>1 folder. </physdesc>
+                </did>
+                <scopecontent>
+                    <p>Letters and circulars from federal civilian agencies, including the General Land
+        Office, the Post Office Department, and the Treasury Department.</p>
+                </scopecontent>
+            </c01>
+            <c01>
+                <did>
+                    <physloc>115.I.19.8F</physloc>
+                    <container>[1]</container>
+                    <unittitle>Letters Received: Indian and Military Affairs, </unittitle>
+                    <unitdate>1853-1857. </unitdate>
+                    <physdesc>1 folder. </physdesc>
+                </did>
+                <scopecontent>
+                    <p>Letters, reports, and orders relating to Indian and military affairs, from the
+        commanding officers at Fort Snelling and Fort Ridgely; from legislative district
+        representatives about the Winnebago treaty, with a copy of Governor Gorman's reply (January
+        1854); and petitions and requests for defense against the Indians.</p>
+                    <p>Includes a letter written by Henry B. Smythe on behalf of the Winnebago Indians (8
+        Jan. 1856) requesting the transfer of $806 from tribal funds to the superintendent of the
+        Winnebago School. It may refer to funds available to the tribe under the 1855 U.S. Treaty
+        with the Winnebago; it is signed by many of the Winnebago signatories to that treaty.
+        </p>
+                </scopecontent>
+            </c01>
+            <c01>
+                <did>
+                    <unittitle>Letters Received: Land Sales, </unittitle>
+                    <unitdate>1853-1857. </unitdate>
+                    <physdesc>9 items.</physdesc>
+                </did>
+                <scopecontent>
+                    <p>Letters about land sales and occupancy.</p>
+                </scopecontent>
+            </c01>
+            <c01>
+                <did>
+                    <unittitle>Letters Received: Other Territorial Affairs, </unittitle>
+                    <unitdate>1853-1857. </unitdate>
+                    <physdesc>16 items.</physdesc>
+                </did>
+                <scopecontent>
+                    <p>Letters from Senator Henry M. Rice and others about a variety of territorial
+        affairs.</p>
+                </scopecontent>
+            </c01>
+            <c01>
+                <did>
+                    <physloc>115.I.19.9B</physloc>
+                    <container>[2]</container>
+                    <unittitle>Pardon Records, </unittitle>
+                    <unitdate>1852-1857. </unitdate>
+                    <physdesc>21 items.</physdesc>
+                </did>
+                <scopecontent>
+                    <p>Requests and petitions for pardons and commutations; governor's pardon; orders for
+        release and related court records; letters for persons convicted and sentenced for various
+        offenses, including murder, assault with intent to kill, assault and battery, simple
+        assault, and resisting an officer; and letters asking for the release of an Indian
+        hostage.</p>
+                </scopecontent>
+            </c01>
+            <c01>
+                <did>
+                    <unittitle>Petitions, </unittitle>
+                    <unitdate>1853-1855. </unitdate>
+                    <physdesc>10 items.</physdesc>
+                </did>
+                <scopecontent>
+                    <p>Various requests and petitions for the establishment of election precincts in
+        Portsmouth and the Sioux Agency, for the organization of local governments in Rice County
+        and Steele County, for a town organization in Bangor, for a vigilance committee to suppress
+        liquor traffic at Traverse des Sioux, and for a certification of election districts in
+        Carver County.</p>
+                </scopecontent>
+            </c01>
+            <c01>
+                <did>
+                    <unittitle>Proclamations, </unittitle>
+                    <unitdate>1854-1855. </unitdate>
+                    <physdesc>2 items.</physdesc>
+                </did>
+                <scopecontent>
+                    <p>Designating November 21, 1854, and November 20, 1855 as days of Thanksgiving.</p>
+                </scopecontent>
+            </c01>
+            <c01>
+                <did>
+                    <unittitle>Records Relating to the Minnesota and Northwestern Railroad Company,</unittitle>
+                    <unitdate>1854-1856. </unitdate>
+                    <physdesc>31 items.</physdesc>
+                </did>
+                <scopecontent>
+                    <p>Bills, correspondence, and reports dealing with its incorporation and with the
+        political maneuverings surrounding its proposed land grant.</p>
+                </scopecontent>
+            </c01>
+            <c01>
+                <did>
+                    <physloc>115.I.19.9B</physloc>
+                    <container>[2]</container>
+                    <unittitle>Reports: Board of Inspectors of the Territorial Prison, </unittitle>
+                    <unitdate>1853-1856. </unitdate>
+                    <physdesc>1 folder. </physdesc>
+                </did>
+                <scopecontent>
+                    <p>Reports that include activities of the board and minutes of board meetings.</p>
+                </scopecontent>
+            </c01>
+            <c01>
+                <did>
+                    <unittitle>Reports: Commissioner of Emigration, </unittitle>
+                    <unitdate>1854-1857. </unitdate>
+                    <physdesc>1 folder. </physdesc>
+                </did>
+                <scopecontent>
+                    <p>Reports of activities, and financial reports including lists of expenditures and
+        various receipts.</p>
+                </scopecontent>
+            </c01>
+            <c01>
+                <did>
+                    <unittitle>Reports: Other Territorial Officers, </unittitle>
+                    <unitdate>1853-1855. </unitdate>
+                    <physdesc>7 items.</physdesc>
+                </did>
+                <c02>
+                    <did>
+                        <unittitle>- Agent to select university lands (December 12, 1855).</unittitle>
+                    </did>
+                </c02>
+                <c02>
+                    <did>
+                        <unittitle>- Commissioner for the Crystal Palace Exhibition (1853, 1854).</unittitle>
+                    </did>
+                </c02>
+                <c02>
+                    <did>
+                        <unittitle>- Superintendent of common schools (December 25, 1854).</unittitle>
+                    </did>
+                </c02>
+                <c02>
+                    <did>
+                        <unittitle>- Territorial auditor (December 30, 1854; December 26, 1855).</unittitle>
+                    </did>
+                </c02>
+            </c01>
+            <c01>
+                <did>
+                    <unittitle>Requests for Return of Fugitives, </unittitle>
+                    <unitdate>1854-1857. </unitdate>
+                    <physdesc>2 folders. </physdesc>
+                </did>
+                <scopecontent>
+                    <p>Both to and from various states.</p>
+                </scopecontent>
+            </c01>
+        </dsc>
+    </archdesc>
+</ead>

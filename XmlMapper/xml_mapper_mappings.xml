@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../XmlMapper/view/xml_mapper_table.xsl"?>
+<!--
+Simple mappings example for XmlMapper.
+
+xpaths
+======
+
+Because xsl doesn't allow dynamic evaluation of paths, only simple expressions
+are supported, the main used for mappings.
+
+All axis are supported (example: "/ead//c02/preceding-sibling::c01/child::did"),
+but predicates should be simple and non-nested, but multiples are supported:
+- [position() = 1], or [1], or [last()]
+- [name() = 'value'], or [local-name() = 'value'1]
+- [element], or [@attribute], or [path/to/../element]
+- [element = 'value'], or [@attribute = 'value'], or [path/to/../@attribute = 'value']
+- (to be done) [element != 'value'], or [@attribute != 'value']
+
+Other xpaths can be processed via additional functions and templates.
+
+Anyway, a function can be added to the end of an xpath (here with 3 arguments):
+"path/to/../node/my_function('arg', element/node, .)".
+
+Some other notes:
+- The first "/" of "from" is always relative to root of the main document.
+- Other paths, without "/" or with "//", are always relative to the current node
+  of the mapping.
+- Prefix are not used. Anyway, it should be added in the root (<xsl:stylesheet>)
+  of the file "xml_mapper_api.xsl".
+- Because the resulting value may be a node or a simple text, next use of the
+  result may need to be processed as a whole.
+- The operator union ("|") is managed simpler, but in a non-standard way:
+  elements are relative to the previous part, not to the context.
+- For performance and for compatibility with the dynamic xpath evaluator for
+  xslt 1, no ancestor and no sibling are used for "map @from" or "map/from". So
+  they are defined at the mapping level (@root, @node, or @base).
+- For compatibility with the dynamic xpath evaluator for xslt 1, some functions
+  used to identify a relation should be defined in a separate mapping.
+
+The exslt function "dyn:evaluate" is not used, because it is not implemented by
+all parsers. Wait for xslt 3.
+
+Main attributes of elements
+===========================
+
+* "mapping"
+
+Differences between attributes "root", "base" and "node" (default is "/"):
+- "root" is used to set nodes of the source that will be used as the base of
+  each record, for the mapping and each depending mapping.
+- "base" is used to simplify the xpaths for the attribute "from" of elements
+  "maps". It is added to the current mapping only.
+
+The  attribute "node" used for the element "use" in the mapping file or in the
+config file allows to set the base of the included mapping. It's relative to the
+current root, so be careful when there are multiple levels of sub-mappings, or
+use only absolute xpath (starting with "/"). The final "from" is always relative
+to the current source.
+
+So, when "root", relative "base" and relative "node" are used, the xpath of a
+relative "from" will be: "/xpath of the root / xpath of the sub-mapping node / xpath of the sub-sub-mapping node / xpath of the base / xpath of the from".
+
+The attribute "type" allows to identify the type of mappings: "full" (default),
+"partial", "identifier', 'relation", or "order". It is used to process mappings
+on partial inputs and to display the table.
+
+* "map"
+
+Attribute "mode" allows to set the type of mapping:
+- "value": copy only the text
+- "node" (default): copy all the content, except the main one and namespaces
+- "copy": copy all the content, except namespaces
+- "full_node": copy the content except the main one
+- "full_copy": copy all the content
+
+Attribute "wrap" allows to add a tag around the mapped value. It can be:
+- empty
+- single tag: "titlepage"
+- multiple tags: "titlepage/chronlist"
+- tags with attributes: "div@class=ead / div@class=ead frontmatter@style=background:none; / div@class=ead ead-titlepage-list@style=background:none;"
+
+Instead of "wrap", attributes "prepend", "append" and "format" may be used to
+add some simple text before or after the content to identify it.
+
+"Wrap", "prepend", "append" and "format" are additions that are mainly used to
+make the conversion reversible. There are less useful else.
+
+Whitespaces are managed automatically.
+
+* "condition"
+
+Conditions can be set on source or on result.
+
+Conditions that are processed on result don't need to be repeated on each map
+with the same attribute "to".
+
+Attribute "match" on the condition "except_only" on source:
+- can be a single value like "subject" or a list of values separated by a pipe,
+  like "dimensions|extent|genreform|physfacet".
+
+@version: 20150824
+@copyright Daniel Berthereau, 2015
+@license CeCILL v2.1 http://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html
+@link https://github.com/Daniel-KM/Ead2DCterms
+-->
+<mappings>
+    <from name="Alpha" prefix="alpha" namespace="https://alpha" />
+    <to name="Omega" prefix="omega" namespace="https://omega" />
+
+    <!-- Namespaces to add to the output, in addition to the main. -->
+    <namespace prefix="xsi" namespace="http://www.w3.org/2001/XMLSchema-instance" />
+    <namespace prefix="xlink" namespace="http://www.w3.org/1999/xlink" />
+
+    <!-- This base id will be used to create the unique identifier of each
+    record, that may be used to create relations between records.
+    -->
+    <baseid from="/alpha/@url" />
+
+    <!-- Default order.
+    It can be overridden by the same attribute in a mapping. -->
+    <order order="Order" />
+
+    <!-- Mapping to create the record "Item". -->
+    <mapping name="Item">
+        <!-- This mapping uses another mapping as a base (not required, just as
+        example). -->
+        <use mapping="Base" />
+        <map from="/alpha/beta" to="description" wrap="beta" />
+    </mapping>
+
+    <!-- Mapping to create the base of a record. -->
+    <mapping name="Base" type="partial">
+        <map from="/alpha/title" to="title" />
+    </mapping>
+
+    <!-- Mapping to create a relation. -->
+    <mapping name="Relation" type="relation">
+        <map from="@related" to="relation" />
+    </mapping>
+
+    <!-- Mapping used for the default order.
+    Any mapping can be used for sort map, but this one avoid to repeat all maps
+    in the base mapping. -->
+    <mapping name="Order" type="order" order="Order">
+        <map to="title" />
+        <map to="description" />
+        <map to="relation" />
+    </mapping>
+</mappings>

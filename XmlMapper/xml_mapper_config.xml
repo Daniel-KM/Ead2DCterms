@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../XmlMapper/view/xml_mapper_table.xsl"?>
+<!--
+Simple configuration example for XmlMapper.
+
+This file allows to set the configuration for the process, in particular to
+define the set of records and the type of identifier and relations.
+
+TODO
+====
+
+- Add the type of original record as attribute if wanted.
+- Add an option to select a default format of all dates (normal, text or both).
+- Add an option to select full copy of external values.
+- Add an option to manage inheritance or not (copy ancestor data of not).
+
+@version: 20150824
+@copyright Daniel Berthereau, 2015
+@license CeCILL v2.1 http://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html
+@link https://github.com/Daniel-KM/Ead2DCterms
+-->
+<config>
+    <!-- These infos are the same as in mappings, and used only for the display. -->
+    <from name="Alpha" prefix="alpha" namespace="https://alpha" />
+    <to name="Omega" prefix="omega" namespace="https://omega" />
+
+    <!-- Mapping between Alpha and Omega. -->
+    <option name="mappings" value="xml_mapper_mappings.xml" />
+
+    <!-- Stylesheet used for rules that are not managed by the mapper currently.
+    NOTE This stylesheet should be imported by the mapper manually, or a
+    specific mapper should be done. -->
+    <option name="rules" value="alpha2omega_rules.xsl" />
+
+    <!-- Default element name of the root and each record. -->
+    <option name="default_element_root" value="records" />
+    <option name="default_element_record" value="record" />
+
+    <!-- Prepend the prefix of the namespace to each element output. -->
+    <option name="output_prefix" value="true" />
+
+    <!-- Possibilities to add other namespaces. -->
+    <!-- <namespace prefix="gamma" namespace="http://gamma" /> -->
+
+    <!-- This base id will be used to create the unique identifier of each
+    record, that may be used to create relations between records. If no
+    attribute "from" is used, the one set in the mapping will be used.
+    -->
+    <baseid default="http://localhost/id" />
+
+    <!-- The default records set for this sample sets only one type of record. -->
+    <records process="true"
+             element_root="records"
+             element_record="record"
+             record_name="true"
+             normalize_space="true"
+             deduplicate="true"
+             remove_empty="true"
+             order="true">
+        <record name="Item" process="true">
+            <use mapping="Item" type="base" />
+            <use mapping="Relation" />
+        </record>
+    </records>
+</config>
