@@ -1,0 +1,47 @@
+/* Styles to adapt bootstrap. */
+body {
+  padding-top: 70px;
+}
+footer {
+  border-top: 1px solid #e5e5e5;
+  color: #767676;
+  margin-top: 100px;
+  padding-bottom: 40px;
+  padding-top: 40px;
+}
+footer a {
+  color: #000000;
+}
+a#logo {
+  background: transparent none no-repeat scroll 0 0 / 100% 100%;
+  /*  padding: 8px 51px; */
+}
+.vertical-space {
+  height: 20px;
+}
+.config .dl-horizontal dt {
+  width: 200px;
+}
+.config .dl-horizontal dd {
+  margin-left: 220px;
+}
+.table .dl-horizontal dt {
+  width: 60px;
+}
+.table .dl-horizontal dd {
+  margin-left: 80px;
+}
+.table dt {
+  font-style: italic;
+  font-weight: normal;
+}
+table ul {
+  padding-left: 20px;
+}
+.mappings h2,
+.config h2 {
+  border-bottom-style: inset;
+}
+.tooltip-inner {
+  text-align: initial;
+}
