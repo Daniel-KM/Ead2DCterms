@@ -168,7 +168,13 @@ all of identical elements.
             <xsl:element name="{$element}">
                 <xsl:if test="(not($record/../@record_name) or $record/../@record_name = 'true')
                     and $record/@name != ''">
-                    <xsl:attribute name="type">
+                    <xsl:variable name="keyType" as="xs:string" select="
+                            if ($record/@record_name_key != '')
+                            then $record/@record_name_key
+                            else if ($record/../@record_name_key != '')
+                                then $record/../@record_name_key
+                                else 'type'" />
+                    <xsl:attribute name="{$keyType}">
                         <xsl:value-of select="$record/@name" />
                     </xsl:attribute>
                 </xsl:if>

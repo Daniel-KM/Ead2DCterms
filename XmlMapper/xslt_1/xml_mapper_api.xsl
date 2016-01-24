@@ -244,9 +244,23 @@ all of identical elements.
             <xsl:element name="{$element}">
                 <xsl:if test="(not($record/../@record_name) or $record/../@record_name = 'true')
                     and $record/@name != ''">
-                    <xsl:attribute name="type">
-                        <xsl:value-of select="$record/@name" />
-                    </xsl:attribute>
+                    <xsl:choose>
+                        <xsl:when test="$record/@record_name_key != ''">
+                            <xsl:attribute name="{$record/@record_name_key}">
+                                <xsl:value-of select="$record/@name" />
+                            </xsl:attribute>
+                        </xsl:when>
+                        <xsl:when test="$record/../@record_name_key != ''">
+                            <xsl:attribute name="{$record/../@record_name_key}">
+                                <xsl:value-of select="$record/@name" />
+                            </xsl:attribute>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="type">
+                                <xsl:value-of select="$record/@name" />
+                            </xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
                 </xsl:if>
 
                 <!-- First, do all of the mapping for the record. -->
