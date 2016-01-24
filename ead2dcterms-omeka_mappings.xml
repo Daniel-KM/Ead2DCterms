@@ -15,16 +15,18 @@ IMPORTANT
 This mapping is only an intermediate tool to import EAD metadata in Omeka and is
 not designed to be used alone. If needed, use ead2dcterms instead.
 
+To import an EAD file into Omeka, all identifiers should be unique.
+
 For main description, see readme.md [https://github.com/Daniel-KM/Ead2DCterms]
 and [https://github.com/Daniel-KM/Ead4Omeka].
 
 For the base of mappings, see ead2dcterms_mappings.xml.
 For technical notes, see xml_mapper_mappings.xml.
 
-@version: 20150824
+@version: 20160125
 @see https://www.loc.gov/ead
 @see http://dublincore.org/specifications
-@copyright Daniel Berthereau, 2015
+@copyright Daniel Berthereau, 2015-2016
 @license CeCILL v2.1 http://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html
 @link https://github.com/Daniel-KM/Ead2DCterms
 @link https://github.com/Daniel-KM/Ead4Omeka
@@ -409,19 +411,27 @@ For technical notes, see xml_mapper_mappings.xml.
              append=" [extent]" />
         <map from="phystech" to="medium"
              append=" [phystech]" />
-        <!-- TODO Normalize (there may be a machine readable id). -->
+        <!-- TODO Normalize (there may be a machine readable id and identifiers should be single). -->
         <map to="identifier" type="concatenation">
             <from from="did/unitid" />
             <from from="did/unitid/@countrycode"
                   wrap="countrycode" />
             <from from="did/unitid/@repositorycode"
                   wrap="repositorycode" />
+            <from from="mapper:get-base-id()"
+                prepend=" [" />
+            <from from="mapper:get-absolute-xpath(.)"
+                    append="]"/>
         </map>
         <map to="identifier" type="concatenation"
              prepend="Location: ">
             <from from="did/physloc" />
             <from from="did/container"
                   wrap="container" />
+            <from from="mapper:get-base-id()"
+                prepend=" [" />
+            <from from="mapper:get-absolute-xpath(.)"
+                    append="]"/>
         </map>
         <map from="prefercite" to="bibliographicCitation" />
         <map from="originalsloc" to="source" />

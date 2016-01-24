@@ -21,7 +21,7 @@ been approved for EAD 2002 and Dublin Core Metadata Terms. So, this app is not
 only a tool to convert metadata, but a mapping table too.
 
 This tool is integrated in [Omeka], an open source platform for publishing
-collections online, via the plugin [Ead4Omeka].
+collections online, via the plugins [Ead4Omeka] and [ArchiveFolder].
 
 
 Xslt mapper
@@ -187,7 +187,7 @@ Current maintainers:
 Copyright
 ---------
 
-* Copyright Daniel Berthereau, 2015
+* Copyright Daniel Berthereau, 2015-2016
 
 
 [Ead2DCterms]: https://github.com/Daniel-KM/Ead2DCterms
@@ -195,6 +195,7 @@ Copyright
 [Dublin Core]: http://dublincore.org
 [Omeka]: https://www.omeka.org
 [Ead4Omeka]: https://github.com/Daniel-KM/Ead4Omeka
+[ArchiveFolder]: https://github.com/Daniel-KM/ArchiveFolder
 [XSLT]: https://www.w3.org/standards/xml/transformation
 [W3C]: https://www.w3.org/
 [official mapping]: http://www.loc.gov/ead/ag/agappb.html#sec3

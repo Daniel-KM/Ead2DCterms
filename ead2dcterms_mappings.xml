@@ -66,11 +66,12 @@ TODO
 - Manage links outside of archdesc and daogrp.
 - Convert "emph"... as html5 and @render as css3?
 - Add a dcterms:type for digital objects, according to extension.
+- Check if all identifiers are really single.
 
-@version: 20150824
+@version: 20160125
 @see https://www.loc.gov/ead
 @see http://dublincore.org/specifications
-@copyright Daniel Berthereau, 2015
+@copyright Daniel Berthereau, 2015-2016
 @license CeCILL v2.1 http://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html
 @link https://github.com/Daniel-KM/Ead2DCterms
 -->
@@ -483,7 +484,7 @@ TODO
              wrap="extent" />
         <map from="phystech" to="medium"
              wrap="phystech" />
-        <!-- TODO Normalize (there may be a machine readable id). -->
+        <!-- TODO Normalize (there may be a machine readable id and identifiers should be single). -->
         <map to="identifier" type="concatenation">
             <from from="did/unitid" />
             <from from="did/unitid/@countrycode"
