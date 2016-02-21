@@ -46,7 +46,7 @@ For technical notes, see xml_mapper_mappings.xml.
     components. Digital archival objects (files) are records too, but they use
     their own id.
     -->
-    <baseid from="/ead/eadheader/eadid/@url" />
+    <baseid from="" />
 
     <!-- Default order.
     It can be overridden by the same attribute in a mapping. -->
