@@ -6,8 +6,8 @@ This version uses xslt 1.1 + extension (downgrade of xslt 2, same structure).
 
 See other notes inside xml_mapper.xsl.
 
-@version: 20150824
-@copyright Daniel Berthereau, 2015
+@version: 20160222
+@copyright Daniel Berthereau, 2015-2016
 @license CeCILL v2.1 http://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html
 @link https://github.com/Daniel-KM/Ead2DCterms
 -->
@@ -16,6 +16,8 @@ See other notes inside xml_mapper.xsl.
 <xsl:stylesheet version="1.1"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
+
+    xmlns:ead="http://www.loc.gov/ead"
 
     exclude-result-prefixes="xsl xs">
 
@@ -41,7 +43,7 @@ See other notes inside xml_mapper.xsl.
 
     <!-- Root of the document and namespaces should be set here, because they
     can be complex to manage in xslt 1. -->
-    <xsl:template match="/">
+    <xsl:template match="/ead:ead">
         <records
                 xmlns:dcterms="http://purl.org/dc/terms/"
                 xmlns:omeka="http://localhost/omeka"

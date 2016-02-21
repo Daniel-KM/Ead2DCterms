@@ -6,8 +6,8 @@ This version uses xslt version 2.0.
 
 See notes inside readme.md and xml_mapper.xsl.
 
-@version: 20150824
-@copyright Daniel Berthereau, 2015
+@version: 20160222
+@copyright Daniel Berthereau, 2015-2016
 @license CeCILL v2.1 http://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html
 @link https://github.com/Daniel-KM/Ead2DCterms
 -->
@@ -16,6 +16,8 @@ See notes inside readme.md and xml_mapper.xsl.
 <xsl:stylesheet version="2.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
+
+    xmlns:ead="http://www.loc.gov/ead"
 
     exclude-result-prefixes="xsl xs">
 
@@ -32,5 +34,10 @@ See notes inside readme.md and xml_mapper.xsl.
 
     <!-- Profile of options. The url should be absolute or relative to "xml_mapper_api.xml". -->
     <xsl:param name="configuration" as="xs:string+">../../ead2dcterms_config.xml</xsl:param>
+
+    <!-- This main template is used only to check the namespace. -->
+    <xsl:template match="/ead:ead">
+        <xsl:apply-templates select="/" />
+    </xsl:template>
 
 </xsl:stylesheet>
