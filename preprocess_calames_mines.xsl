@@ -46,6 +46,16 @@ composants de classement, mais uniquement ceux des sous-composants.
 
     <xsl:strip-space elements="*" />
 
+    <!-- Paramètres. -->
+
+    <!-- Constantes. -->
+
+    <!-- Saut de ligne (standard Linux / Mac). -->
+    <!-- Il est utilisé pour les commentaires, non indentés automatiquement. -->
+    <xsl:variable name="end_of_line">
+        <xsl:text>&#x0A;</xsl:text>
+    </xsl:variable>
+
     <!-- Templates. -->
 
     <!-- Identity template. -->
@@ -57,12 +67,14 @@ composants de classement, mais uniquement ceux des sous-composants.
 
     <!-- Niveau de classement à supprimer (niveau supérieur). -->
     <xsl:template match="ead:archdesc/ead:dsc/ead:c[not(ead:did/ead:unitid/@type = 'cote')]">
+        <xsl:value-of select="$end_of_line" />
         <xsl:comment> Niveau supprimé (<xsl:value-of select="@id" />) </xsl:comment>
         <xsl:apply-templates select="ead:c" />
     </xsl:template>
 
     <!-- Conservation des composants "cote". -->
     <xsl:template match="ead:c[ead:did/ead:unitid/@type = 'cote']">
+        <xsl:value-of select="$end_of_line" />
         <xsl:comment> Document numérisé (<xsl:value-of select="@id" />) </xsl:comment>
         <xsl:copy>
             <xsl:apply-templates select="@*|node()[not(self::ead:c)]" />
@@ -151,6 +163,7 @@ composants de classement, mais uniquement ceux des sous-composants.
     <!-- Transformation de chaque sous-composant en un élément d'index
     (récursif). -->
     <xsl:template match="ead:c/ead:c[not(ead:did/ead:unitid/@type = 'cote')]">
+        <xsl:value-of select="$end_of_line" />
         <xsl:comment> Partie (<xsl:value-of select="@id" />) </xsl:comment>
 
         <!-- Copie du titre et du numéro de page et des description, dates et
