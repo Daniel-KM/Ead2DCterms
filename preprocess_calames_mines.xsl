@@ -65,15 +65,19 @@ composants de classement, mais uniquement ceux des sous-composants.
         </xsl:copy>
     </xsl:template>
 
-    <!-- Niveau de classement à supprimer (niveau supérieur). -->
-    <xsl:template match="ead:archdesc/ead:dsc/ead:c[not(ead:did/ead:unitid/@type = 'cote')]">
+    <!-- Niveau de classement à supprimer (niveau supérieur sans cote). -->
+    <xsl:template match="ead:archdesc/ead:dsc/ead:c
+            [not(ead:did/ead:unitid/@type = 'cote')]
+            ">
         <xsl:value-of select="$end_of_line" />
         <xsl:comment> Niveau supprimé (<xsl:value-of select="@id" />) </xsl:comment>
         <xsl:apply-templates select="ead:c" />
     </xsl:template>
 
     <!-- Conservation des composants "cote". -->
-    <xsl:template match="ead:c[ead:did/ead:unitid/@type = 'cote']">
+    <xsl:template match="ead:c
+            [ead:did/ead:unitid/@type = 'cote']
+            ">
         <xsl:value-of select="$end_of_line" />
         <xsl:comment> Document numérisé (<xsl:value-of select="@id" />) </xsl:comment>
         <xsl:copy>
@@ -162,7 +166,9 @@ composants de classement, mais uniquement ceux des sous-composants.
 
     <!-- Transformation de chaque sous-composant en un élément d'index
     (récursif). -->
-    <xsl:template match="ead:c/ead:c[not(ead:did/ead:unitid/@type = 'cote')]">
+    <xsl:template match="ead:c/ead:c
+            [not(ead:did/ead:unitid/@type = 'cote')]
+            ">
         <xsl:value-of select="$end_of_line" />
         <xsl:comment> Partie (<xsl:value-of select="@id" />) </xsl:comment>
 
