@@ -18,10 +18,9 @@ documents (mémoires étudiants). Les sous-composants de ces documents sont de
 simples descriptifs et toujours rattachés au document principal.
 
 Concrètement :
-- Seules les notices des documents présentant un champ EAD <processinfo>
-« Document devant être numérisé en 2016 dans le cadre d'un partenariat avec la BnF »
-au niveau d'une cote (uniquement au premier niveau ici) sont concernées par ce
-mapping et la conversion consécutive.
+- Seules les notices des documents présentant un champ EAD <processinfo> qui
+contient le texte défini ci-dessous au niveau d'une cote (uniquement au premier
+niveau ici) sont concernées par ce mapping et la conversion consécutive.
 - Certaines valeurs sont simplifiées ou concaténées.
 - Certaines valeurs sont initialisées (droits, type...).
 
@@ -60,6 +59,16 @@ composants de classement, mais uniquement ceux des sous-composants.
 
     <!-- Paramètres. -->
 
+    <!--
+    Texte du processinfo des composants à conserver.
+    Remarques :
+    - Seul le texte brut de processinfo est testé, sans espace de début ou de fin.
+    - Le texte de processinfo peut contenir d'autre texte.
+    -->
+    <xsl:param name="processinfo_texte">
+        <xsl:text>Document devant être numérisé en 2016 dans le cadre d'un partenariat avec la BnF</xsl:text>
+    </xsl:param>
+
     <!-- Constantes. -->
 
     <!-- Saut de ligne (standard Linux / Mac). -->
@@ -83,7 +92,31 @@ composants de classement, mais uniquement ceux des sous-composants.
             ">
         <xsl:value-of select="$end_of_line" />
         <xsl:comment> Niveau supprimé (<xsl:value-of select="@id" />) </xsl:comment>
-        <xsl:apply-templates select="ead:c" />
+        <xsl:choose>
+            <xsl:when test="$processinfo_texte = ''">
+                <xsl:apply-templates select="ead:c" />
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:apply-templates select="ead:c" mode="filtre" />
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
+    <!-- Traitement avec filtre des composants.
+    Ce template est séparé afin de l'adapter facilement pour d'autres critères.
+    -->
+    <xsl:template match="ead:c" mode="filtre">
+        <xsl:choose>
+            <xsl:when test="$processinfo_texte
+                    and normalize-space(ead:processinfo)
+                    and contains(normalize-space(ead:processinfo), $processinfo_texte)">
+                <xsl:apply-templates select="." />
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="$end_of_line" />
+                <xsl:comment> Document à ne pas traiter (<xsl:value-of select="@id" />) </xsl:comment>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
     <!-- Conservation des composants "cote". -->
