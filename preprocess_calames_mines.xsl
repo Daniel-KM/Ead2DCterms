@@ -13,6 +13,18 @@ dates, lieux, noms).
 Le but n'est de faire un import inversable : certaines données sont perdues lors
 de la conversion.
 
+Cet outil est adapté aux documents des mines, qui est une simple liste de
+documents (mémoires étudiants). Les sous-composants de ces documents sont de
+simples descriptifs et toujours rattachés au document principal.
+
+Concrètement :
+- Seules les notices des documents présentant un champ EAD <processinfo>
+« Document devant être numérisé en 2016 dans le cadre d'un partenariat avec la BnF »
+au niveau d'une cote (uniquement au premier niveau ici) sont concernées par ce
+mapping et la conversion consécutive.
+- Certaines valeurs sont simplifiées ou concaténées.
+- Certaines valeurs sont initialisées (droits, type...).
+
 Remarques :
 - Un seul DSC
 - Les composants de classement supérieurs sont supprimés, y compris les données
@@ -26,7 +38,7 @@ la forme "arrangement / list / defitem".
 - Les index ne reprennent pas les termes du composant principal ni des
 composants de classement, mais uniquement ceux des sous-composants.
 
-@version 20160728
+@version 20160912
 @copyright Daniel Berthereau, 2016, pour Mines ParisTech
 @license CeCILL v2.1 http://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html
 -->
