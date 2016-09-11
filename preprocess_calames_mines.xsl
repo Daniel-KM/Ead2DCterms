@@ -56,7 +56,7 @@ composants de classement, mais uniquement ceux des sous-composants.
     </xsl:template>
 
     <!-- Niveau de classement à supprimer (niveau supérieur). -->
-    <xsl:template match="ead:archdesc/ead:dsc/ead:c[ead:did/ead:unitid/@type != 'cote']">
+    <xsl:template match="ead:archdesc/ead:dsc/ead:c[not(ead:did/ead:unitid/@type = 'cote')]">
         <xsl:comment> Niveau supprimé (<xsl:value-of select="@id" />) </xsl:comment>
         <xsl:apply-templates select="ead:c" />
     </xsl:template>
@@ -79,13 +79,13 @@ composants de classement, mais uniquement ceux des sous-composants.
                 </xsl:element>
 
                 <!-- Création de l'index des sujets. -->
-                <xsl:if test="descendant::ead:c[ead:did/ead:unitid/@type != 'cote']
+                <xsl:if test="descendant::ead:c[not(ead:did/ead:unitid/@type = 'cote')]
                         //ead:subject">
                     <xsl:element name="odd" namespace="http://www.loc.gov/ead">
                         <xsl:element name="list" namespace="http://www.loc.gov/ead">
                             <xsl:attribute name="type">simple</xsl:attribute>
                             <xsl:element name="head" namespace="http://www.loc.gov/ead">Sujets</xsl:element>
-                            <xsl:apply-templates select="descendant::ead:c[ead:did/ead:unitid/@type != 'cote']
+                            <xsl:apply-templates select="descendant::ead:c[not(ead:did/ead:unitid/@type = 'cote')]
                                     //ead:subject" mode="item" />
                         </xsl:element>
                     </xsl:element>
@@ -93,33 +93,33 @@ composants de classement, mais uniquement ceux des sous-composants.
 
                 <!-- Création de l'index des dates (hors unitdate et chronlist,
                 qui sont repris ailleurs). -->
-                <xsl:if test="descendant::ead:c[ead:did/ead:unitid/@type != 'cote']
+                <xsl:if test="descendant::ead:c[not(ead:did/ead:unitid/@type = 'cote')]
                         //ead:date[not(parent::ead:chronitem)]">
                     <xsl:element name="odd" namespace="http://www.loc.gov/ead">
                         <xsl:element name="list" namespace="http://www.loc.gov/ead">
                             <xsl:attribute name="type">simple</xsl:attribute>
                             <xsl:element name="head" namespace="http://www.loc.gov/ead">Dates</xsl:element>
-                            <xsl:apply-templates select="descendant::ead:c[ead:did/ead:unitid/@type != 'cote']
+                            <xsl:apply-templates select="descendant::ead:c[not(ead:did/ead:unitid/@type = 'cote')]
                                     //ead:date[not(parent::ead:chronitem)]" mode="item" />
                         </xsl:element>
                     </xsl:element>
                 </xsl:if>
 
                 <!-- Création de l'index des lieux. -->
-                <xsl:if test="descendant::ead:c[ead:did/ead:unitid/@type != 'cote']
+                <xsl:if test="descendant::ead:c[not(ead:did/ead:unitid/@type = 'cote')]
                         //ead:geogname">
                     <xsl:element name="odd" namespace="http://www.loc.gov/ead">
                         <xsl:element name="list" namespace="http://www.loc.gov/ead">
                             <xsl:attribute name="type">simple</xsl:attribute>
                             <xsl:element name="head" namespace="http://www.loc.gov/ead">Lieux</xsl:element>
-                            <xsl:apply-templates select="descendant::ead:c[ead:did/ead:unitid/@type != 'cote']
+                            <xsl:apply-templates select="descendant::ead:c[not(ead:did/ead:unitid/@type = 'cote')]
                                     //ead:geogname" mode="item" />
                         </xsl:element>
                     </xsl:element>
                 </xsl:if>
 
                 <!-- Création de l'index des noms (personnes, organisations...). -->
-                <xsl:if test="descendant::ead:c[ead:did/ead:unitid/@type != 'cote']
+                <xsl:if test="descendant::ead:c[not(ead:did/ead:unitid/@type = 'cote')]
                     /descendant::element()
                             [self::ead:name
                             |self::ead:corpname
@@ -131,7 +131,7 @@ composants de classement, mais uniquement ceux des sous-composants.
                         <xsl:element name="list" namespace="http://www.loc.gov/ead">
                             <xsl:attribute name="type">simple</xsl:attribute>
                             <xsl:element name="head" namespace="http://www.loc.gov/ead">Noms</xsl:element>
-                            <xsl:apply-templates select="descendant::ead:c[ead:did/ead:unitid/@type != 'cote']
+                            <xsl:apply-templates select="descendant::ead:c[not(ead:did/ead:unitid/@type = 'cote')]
                         /descendant::element()
                             [self::ead:name
                             |self::ead:corpname
@@ -150,7 +150,7 @@ composants de classement, mais uniquement ceux des sous-composants.
 
     <!-- Transformation de chaque sous-composant en un élément d'index
     (récursif). -->
-    <xsl:template match="ead:c/ead:c[ead:did/ead:unitid/@type != 'cote']">
+    <xsl:template match="ead:c/ead:c[not(ead:did/ead:unitid/@type = 'cote')]">
         <xsl:comment> Partie (<xsl:value-of select="@id" />) </xsl:comment>
 
         <!-- Copie du titre et du numéro de page et des description, dates et
