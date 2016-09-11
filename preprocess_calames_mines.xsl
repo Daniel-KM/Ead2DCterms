@@ -79,6 +79,9 @@ composants de classement, mais uniquement ceux des sous-composants.
     -->
     <xsl:param name="format_liste">ead</xsl:param>
 
+    <!-- Ajoute les identifiants de chaque composant, supprimé ou non. -->
+    <xsl:param name="ajouter_commentaire">true</xsl:param>
+
     <!-- Constantes. -->
 
     <!-- Saut de ligne (standard Linux / Mac). -->
@@ -100,8 +103,10 @@ composants de classement, mais uniquement ceux des sous-composants.
     <xsl:template match="ead:archdesc/ead:dsc/ead:c
             [not(ead:did/ead:unitid/@type = 'cote')]
             ">
-        <xsl:value-of select="$end_of_line" />
-        <xsl:comment> Niveau supprimé (<xsl:value-of select="@id" />) </xsl:comment>
+        <xsl:if test="$ajouter_commentaire = 'true'" >
+            <xsl:value-of select="$end_of_line" />
+            <xsl:comment> Niveau supprimé (<xsl:value-of select="@id" />) </xsl:comment>
+        </xsl:if>
         <xsl:choose>
             <xsl:when test="$processinfo_texte = ''">
                 <xsl:apply-templates select="ead:c" />
@@ -123,8 +128,10 @@ composants de classement, mais uniquement ceux des sous-composants.
                 <xsl:apply-templates select="." />
             </xsl:when>
             <xsl:otherwise>
-                <xsl:value-of select="$end_of_line" />
-                <xsl:comment> Document à ne pas traiter (<xsl:value-of select="@id" />) </xsl:comment>
+                <xsl:if test="$ajouter_commentaire = 'true'" >
+                    <xsl:value-of select="$end_of_line" />
+                    <xsl:comment> Document à ne pas traiter (<xsl:value-of select="@id" />) </xsl:comment>
+                </xsl:if>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
@@ -134,8 +141,10 @@ composants de classement, mais uniquement ceux des sous-composants.
     <xsl:template match="ead:dsc/ead:c/ead:c
             [ead:did/ead:unitid/@type = 'cote']
             ">
-        <xsl:value-of select="$end_of_line" />
-        <xsl:comment> Document numérisé (<xsl:value-of select="@id" />) </xsl:comment>
+        <xsl:if test="$ajouter_commentaire = 'true'" >
+            <xsl:value-of select="$end_of_line" />
+            <xsl:comment> Document numérisé (<xsl:value-of select="@id" />) </xsl:comment>
+        </xsl:if>
         <xsl:copy>
             <xsl:apply-templates select="@*|node()[not(self::ead:c)]" />
             <!-- Intégration des sous-composants si présents. -->
@@ -236,8 +245,10 @@ composants de classement, mais uniquement ceux des sous-composants.
     (récursif), sachant que les documents sont au 2e niveau et donc les sous-
     composants au 3e niveau. -->
     <xsl:template match="ead:c/ead:c/ead:c" mode="ead">
-        <xsl:value-of select="$end_of_line" />
-        <xsl:comment> Partie (<xsl:value-of select="@id" />) </xsl:comment>
+        <xsl:if test="$ajouter_commentaire = 'true'" >
+            <xsl:value-of select="$end_of_line" />
+            <xsl:comment> Partie (<xsl:value-of select="@id" />) </xsl:comment>
+        </xsl:if>
 
         <!-- Copie du titre et du numéro de page et des description, dates et
         autres éléments éventuels. -->
