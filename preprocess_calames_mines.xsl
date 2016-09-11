@@ -37,6 +37,7 @@ texte brut ou sous la forme "arrangement / list / defitem", selon le paramètre
 "format_liste".
 - Les index ne reprennent pas les termes du composant principal ni des
 composants de classement, mais uniquement ceux des sous-composants.
+- Si on choisit le format "brut", ne pas normaliser les espaces dans ead2dcterms_config.xml.
 
 @version 20160912
 @copyright Daniel Berthereau, 2016, pour Mines ParisTech
@@ -77,9 +78,11 @@ composants de classement, mais uniquement ceux des sous-composants.
     sur une page web en html sans une feuille css spécifique et qui n'est donc
     pas recommandé.
     -->
-    <xsl:param name="format_liste">ead</xsl:param>
+    <xsl:param name="format_liste">brut</xsl:param>
 
-    <!-- Ajoute les identifiants de chaque composant, supprimé ou non. -->
+    <!-- Ajoute les identifiants de chaque composant, supprimé ou non ("true"
+    ou "false"). De toute façon, ils sont supprimés lors de l'import Omeka.
+    -->
     <xsl:param name="ajouter_commentaire">true</xsl:param>
 
     <!-- Constantes. -->
@@ -301,6 +304,135 @@ composants de classement, mais uniquement ceux des sous-composants.
         </xsl:element>
     </xsl:template>
 
+    <!-- Format "brut" (texte brut). -->
+
+    <!-- Conservation des documents (1er niveau). -->
+    <xsl:template match="ead:c" mode="brut">
+        <!-- Création de la table des matières des sous-composants. -->
+        <xsl:element name="arrangement" namespace="http://www.loc.gov/ead">
+            <xsl:apply-templates select="ead:c" mode="brut" />
+        </xsl:element>
+
+        <!-- Création de l'index des sujets. -->
+        <xsl:if test="descendant::ead:c
+                //ead:subject">
+            <xsl:element name="odd" namespace="http://www.loc.gov/ead">
+                <xsl:element name="list" namespace="http://www.loc.gov/ead">
+                    <xsl:attribute name="type">simple</xsl:attribute>
+                    <xsl:element name="head" namespace="http://www.loc.gov/ead">Sujets</xsl:element>
+                    <xsl:apply-templates select="descendant::ead:c
+                            //ead:subject" mode="item_brut" />
+                </xsl:element>
+            </xsl:element>
+        </xsl:if>
+
+        <!-- Création de l'index des dates (hors unitdate et chronlist,
+        qui sont repris ailleurs). -->
+        <xsl:if test="descendant::ead:c
+                //ead:date[not(parent::ead:chronitem)]">
+            <xsl:element name="odd" namespace="http://www.loc.gov/ead">
+                <xsl:element name="list" namespace="http://www.loc.gov/ead">
+                    <xsl:attribute name="type">simple</xsl:attribute>
+                    <xsl:element name="head" namespace="http://www.loc.gov/ead">Dates</xsl:element>
+                    <xsl:apply-templates select="descendant::ead:c
+                            //ead:date[not(parent::ead:chronitem)]" mode="item_brut" />
+                </xsl:element>
+            </xsl:element>
+        </xsl:if>
+
+        <!-- Création de l'index des lieux. -->
+        <xsl:if test="descendant::ead:c
+                //ead:geogname">
+            <xsl:element name="odd" namespace="http://www.loc.gov/ead">
+                <xsl:element name="list" namespace="http://www.loc.gov/ead">
+                    <xsl:attribute name="type">simple</xsl:attribute>
+                    <xsl:element name="head" namespace="http://www.loc.gov/ead">Lieux</xsl:element>
+                    <xsl:apply-templates select="descendant::ead:c
+                            //ead:geogname" mode="item_brut" />
+                </xsl:element>
+            </xsl:element>
+        </xsl:if>
+
+        <!-- Création de l'index des noms (personnes, organisations...). -->
+        <xsl:if test="descendant::ead:c
+            /descendant::element()
+                    [self::ead:name
+                    | self::ead:corpname
+                    | self::ead:persname
+                    | self::ead:famname
+                    ]
+               ">
+            <xsl:element name="odd" namespace="http://www.loc.gov/ead">
+                <xsl:element name="list" namespace="http://www.loc.gov/ead">
+                    <xsl:attribute name="type">simple</xsl:attribute>
+                    <xsl:element name="head" namespace="http://www.loc.gov/ead">Noms</xsl:element>
+                    <xsl:apply-templates select="descendant::ead:c
+                /descendant::element()
+                    [self::ead:name
+                    | self::ead:corpname
+                    | self::ead:persname
+                    | self::ead:famname
+                    ]" mode="item_brut" />
+                </xsl:element>
+            </xsl:element>
+        </xsl:if>
+
+        <!-- Création de l'index des langues ? -->
+    </xsl:template>
+
+    <!-- Transformation de chaque sous-composant en un élément d'index
+    (récursif), sachant que les documents sont au 2e niveau et donc les sous-
+    composants au 3e niveau. -->
+    <xsl:template match="ead:c/ead:c/ead:c" mode="brut">
+        <xsl:if test="$ajouter_commentaire = 'true'" >
+            <xsl:value-of select="$end_of_line" />
+            <xsl:comment> Partie (<xsl:value-of select="@id" />) </xsl:comment>
+        </xsl:if>
+
+        <!-- Copie du titre et du numéro de page et des description, dates et
+        autres éléments éventuels. -->
+        <xsl:value-of select="$end_of_line" />
+        <xsl:value-of select="substring('***************************', 1, number(my:niveau_composant(.)))" />
+        <xsl:text> </xsl:text>
+        <xsl:value-of select="ead:did/ead:unitid" />
+        <xsl:value-of select="$end_of_line" />
+        <xsl:value-of select="ead:did/ead:unittitle" />
+        <xsl:value-of select="$end_of_line" />
+        <xsl:if test="ead:did/ead:unitdate">
+            <xsl:text>  Date</xsl:text>
+            <xsl:value-of select="$end_of_line" />
+            <xsl:apply-templates select="
+                ead:did/ead:unitdate/@*[not(self::ead:datechar | self::ead:label)]
+                | ead:did/ead:unitdate/node()" />
+        </xsl:if>
+        <xsl:if test="ead:scopecontent">
+            <xsl:value-of select="ead:scopecontent" />
+            <xsl:value-of select="$end_of_line" />
+        </xsl:if>
+        <!-- Autres éléments. -->
+        <xsl:if test="node()[not(self::ead:c | self::ead:did | self::ead:scopecontent)]">
+            <xsl:apply-templates select="node()
+                [not(self::ead:c | self::ead:did | self::ead:scopecontent)]" />
+        </xsl:if>
+        <!-- Sous sous-composants. -->
+        <xsl:if test="ead:c">
+            <xsl:text>  * </xsl:text>
+            <xsl:apply-templates select="ead:c" mode="brut" />
+        </xsl:if>
+    </xsl:template>
+
+    <!-- Transformation d'un élément en un élément d'index. -->
+    <xsl:template match="node()" mode="item_brut">
+        <xsl:text>  </xsl:text>
+        <xsl:copy>
+            <xsl:apply-templates select="@*|node()" />
+        </xsl:copy>
+    </xsl:template>
+
     <!-- Fonctions -->
+    <xsl:function name="my:niveau_composant" as="xs:string">
+        <xsl:param name="base" />
+        <xsl:value-of select="count($base/ancestor::ead:*) - 4" />
+    </xsl:function>
 
 </xsl:stylesheet>
