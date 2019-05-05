@@ -12,7 +12,7 @@ For main description, see ead2omeka_mappings.xml.
 @copyright Daniel Berthereau, 2015
 @license CeCILL v2.1 http://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html
 @link https://github.com/Daniel-KM/Ead2DCterms
-@link https://github.com/Daniel-KM/Ead4Omeka
+@link https://github.com/Daniel-KM/Omeka-plugin-Ead
 -->
 <config>
     <!-- These infos are the same as in mappings, and used only for the display. -->

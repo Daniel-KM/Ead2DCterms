@@ -143,8 +143,8 @@ Warning
 
 Use it at your own risk.
 
-It's always recommended to backup your files and database regularly so you can
-roll back if needed.
+It’s always recommended to backup your files and your databases and to check
+your archives regularly so you can roll back if needed.
 
 
 Troubleshooting
@@ -194,16 +194,16 @@ Copyright
 [EAD]: https://loc.gov/ead
 [Dublin Core]: http://dublincore.org
 [Omeka]: https://www.omeka.org
-[Ead4Omeka]: https://github.com/Daniel-KM/Ead4Omeka
-[ArchiveFolder]: https://github.com/Daniel-KM/ArchiveFolder
+[Ead4Omeka]: https://github.com/Daniel-KM/Omeka-plugin-Ead
+[ArchiveFolder]: https://github.com/Daniel-KM/Omeka-plugin-ArchiveFolder
 [XSLT]: https://www.w3.org/standards/xml/transformation
 [W3C]: https://www.w3.org/
 [official mapping]: http://www.loc.gov/ead/ag/agappb.html#sec3
 [Anaphore]: https://github.com/Anaphore/joai_xsl
 [Pleade]: http://www.pleade.com
 [Ead Importer]: https://github.com/scholarslab/EadImporter
-[ead2dcterms_config.xml]: https://github.com/Daniel-KM/Ead2DCterms/blob/master/ead2dcterms_config.xml
-[ead2dcterms_mappings.xml]: https://github.com/Daniel-KM/Ead2DCterms/blob/master/ead2dcterms_mappings.xml
+[ead2dcterms_config.xml]: https://github.com/Daniel-KM/Ead2DCterms_config.xml
+[ead2dcterms_mappings.xml]: https://github.com/Daniel-KM/Ead2DCterms_mappings.xml
 [jEdit]: http://www.jedit.org
 [page of issues]: https://github.com/Daniel-KM/Ead2DCterms/issues
 [CeCILL v2.1]: https://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html

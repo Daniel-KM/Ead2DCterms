@@ -18,7 +18,7 @@ not designed to be used alone. If needed, use ead2dcterms instead.
 To import an EAD file into Omeka, all identifiers should be unique.
 
 For main description, see readme.md [https://github.com/Daniel-KM/Ead2DCterms]
-and [https://github.com/Daniel-KM/Ead4Omeka].
+and [https://github.com/Daniel-KM/Omeka-plugin-Ead].
 
 For the base of mappings, see ead2dcterms_mappings.xml.
 For technical notes, see xml_mapper_mappings.xml.
@@ -29,7 +29,7 @@ For technical notes, see xml_mapper_mappings.xml.
 @copyright Daniel Berthereau, 2015-2016
 @license CeCILL v2.1 http://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html
 @link https://github.com/Daniel-KM/Ead2DCterms
-@link https://github.com/Daniel-KM/Ead4Omeka
+@link https://github.com/Daniel-KM/Omeka-plugin-Ead
 -->
 <mappings>
     <from name="EAD 2002" prefix="ead" namespace="http://www.loc.gov/ead" />
