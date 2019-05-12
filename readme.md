@@ -20,8 +20,9 @@ If an [official mapping] was established for EAD 1.0 and Dublin Core, none has
 been approved for EAD 2002 and Dublin Core Metadata Terms. So, this app is not
 only a tool to convert metadata, but a mapping table too.
 
-This tool is integrated in [Omeka], an open source platform for publishing
-collections online, via the plugins [Ead4Omeka] and [ArchiveFolder].
+This tool is integrated in [Omeka Classic] and [Omeka S], an open source
+platform for publishing collections online, via the plugins [Ead] and
+[Archive Folder] and the [module EAD].
 
 
 Xslt mapper
@@ -156,24 +157,31 @@ See online issues on the [page of issues] on GitHub.
 License
 -------
 
-This plugin is published under the [CeCILL v2.1] licence, compatible with
+This module is published under the [CeCILL v2.1] licence, compatible with
 [GNU/GPL] and approved by [FSF] and [OSI].
 
-In consideration of access to the source code and the rights to copy, modify and
-redistribute granted by the license, users are provided only with a limited
-warranty and the software's author, the holder of the economic rights, and the
-successive licensors only have limited liability.
+This software is governed by the CeCILL license under French law and abiding by
+the rules of distribution of free software. You can use, modify and/ or
+redistribute the software under the terms of the CeCILL license as circulated by
+CEA, CNRS and INRIA at the following URL "http://www.cecill.info".
 
-In this respect, the risks associated with loading, using, modifying and/or
-developing or reproducing the software by the user are brought to the user's
-attention, given its Free Software status, which may make it complicated to use,
-with the result that its use is reserved for developers and experienced
-professionals having in-depth computer knowledge. Users are therefore encouraged
-to load and test the suitability of the software as regards their requirements
-in conditions enabling the security of their systems and/or data to be ensured
-and, more generally, to use and operate it in the same conditions of security.
-This Agreement may be freely reproduced and published, provided it is not
-altered, and that no provisions are either added or removed herefrom.
+As a counterpart to the access to the source code and rights to copy, modify and
+redistribute granted by the license, users are provided only with a limited
+warranty and the software’s author, the holder of the economic rights, and the
+successive licensors have only limited liability.
+
+In this respect, the user’s attention is drawn to the risks associated with
+loading, using, modifying and/or developing or reproducing the software by the
+user in light of its specific status of free software, that may mean that it is
+complicated to manipulate, and that also therefore means that it is reserved for
+developers and experienced professionals having in-depth computer knowledge.
+Users are therefore encouraged to load and test the software’s suitability as
+regards their requirements in conditions enabling the security of their systems
+and/or data to be ensured and, more generally, to use and operate it in the same
+conditions as regards security.
+
+The fact that you are presently reading this means that you have had knowledge
+of the CeCILL license and that you accept its terms.
 
 
 Contact
@@ -187,15 +195,17 @@ Current maintainers:
 Copyright
 ---------
 
-* Copyright Daniel Berthereau, 2015-2016
+* Copyright Daniel Berthereau, 2015-2019
 
 
 [Ead2DCterms]: https://github.com/Daniel-KM/Ead2DCterms
 [EAD]: https://loc.gov/ead
 [Dublin Core]: http://dublincore.org
-[Omeka]: https://www.omeka.org
-[Ead4Omeka]: https://github.com/Daniel-KM/Omeka-plugin-Ead
-[ArchiveFolder]: https://github.com/Daniel-KM/Omeka-plugin-ArchiveFolder
+[Omeka Classic]: https://omeka.org/classic
+[Omeka S]: https://omeka.org/s
+[Ead]: https://github.com/Daniel-KM/Omeka-plugin-Ead
+[Archive Folder]: https://github.com/Daniel-KM/Omeka-plugin-ArchiveFolder
+[module EAD]: https://github.com/Daniel-KM/Omeka-S-module-Ead
 [XSLT]: https://www.w3.org/standards/xml/transformation
 [W3C]: https://www.w3.org/
 [official mapping]: http://www.loc.gov/ead/ag/agappb.html#sec3
