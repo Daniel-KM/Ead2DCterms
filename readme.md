@@ -184,18 +184,10 @@ The fact that you are presently reading this means that you have had knowledge
 of the CeCILL license and that you accept its terms.
 
 
-Contact
--------
-
-Current maintainers:
-
-* Daniel Berthereau (see [Daniel-KM] on GitHub)
-
-
 Copyright
 ---------
 
-* Copyright Daniel Berthereau, 2015-2019
+* Copyright Daniel Berthereau, 2015-2020 (see [Daniel-KM] on GitHub)
 
 
 [Ead2DCterms]: https://github.com/Daniel-KM/Ead2DCterms
